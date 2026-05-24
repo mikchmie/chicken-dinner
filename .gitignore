@@ -75,3 +75,14 @@ out/
 .yarn/unplugged
 .yarn/install-state.gz
 .pnp.*
+
+# from 10x-astro-starter
+.astro/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.env.production
+.dev.vars
+.wrangler/
+.idea/
