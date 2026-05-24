@@ -2,15 +2,30 @@
   "package": "@przeprogramowani/10x-cli",
   "version": "1.6.1",
   "manifestVersion": 2,
-  "lastApplied": "2026-05-24T10:20:13.313Z",
-  "lessonId": "m0l1",
+  "lastApplied": "2026-05-24T11:39:48.260Z",
+  "lessonId": "m1l1",
   "course": "10xdevs3",
   "tool": "claude-code",
   "files": {
-    "skills": {},
-    "prompts": [
-      "m0l1-prework.md"
-    ],
+    "skills": {
+      "10x-init": {
+        "files": [
+          "SKILL.md"
+        ]
+      },
+      "10x-shape": {
+        "files": [
+          "references/prd-schema.md",
+          "SKILL.md"
+        ]
+      },
+      "10x-prd": {
+        "files": [
+          "SKILL.md"
+        ]
+      }
+    },
+    "prompts": [],
     "configs": []
   }
 }
