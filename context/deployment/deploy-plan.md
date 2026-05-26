@@ -5,6 +5,7 @@ platform: Cloudflare Workers
 worker_name: 10x-astro-starter
 live_url: https://10x-astro-starter.mikolaj-chmielewski.workers.dev
 version_id: 694b157e-792f-4bac-9b18-2bf0528b4bb1
+latest_ci_version_id: 2ec5a9f0-2467-45d6-938e-e33bfc2b441d
 sources:
   - context/foundation/infrastructure.md
   - context/foundation/tech-stack.md
@@ -12,8 +13,12 @@ status: deployed
 secrets_set:
   - SUPABASE_URL
   - SUPABASE_KEY
-deferred:
-  - ci-auto-deploy
+github_secrets_set:
+  - CLOUDFLARE_API_TOKEN
+  - CLOUDFLARE_ACCOUNT_ID
+  - SUPABASE_URL
+  - SUPABASE_KEY
+deferred: []
 ---
 
 ## What was deployed
@@ -148,6 +153,7 @@ When a GitHub remote exists and you want every push to `main` to trigger a deplo
 - **`@astrojs/cloudflare` floating version** (`^13.5.0` in `package.json`): pin to `13.5.0` after a few stable deploys to avoid unexpected adapter behavior changes (per `infrastructure.md` Unknown Unknowns).
 - **Free-tier 10 ms CPU limit**: not pre-deploy actionable. Watch for 429s; budget $5/mo for Workers paid plan if SSR pages hit the ceiling under real traffic (Risk Register row 2).
 - **Wrangler `4.94.0 → 4.95.0` update available**: not blocking.
+- **GitHub Actions Node.js 20 deprecation**: `actions/checkout@v4` and `actions/setup-node@v4` must be bumped to Node.js 24-compatible versions before **2026-06-02** (forced default) or CI will fail. Tracked via scheduled routine `trig_01QCj1f2g4i3wqAwqKQZ7UE1` (fires 2026-05-30 09:00 Warsaw). Connect GitHub at https://claude.ai/code/onboarding?magic=github-app-setup before that date for the routine to push the change automatically.
 
 ## Rollback
 
