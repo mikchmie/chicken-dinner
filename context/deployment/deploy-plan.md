@@ -9,8 +9,10 @@ sources:
   - context/foundation/infrastructure.md
   - context/foundation/tech-stack.md
 status: deployed
+secrets_set:
+  - SUPABASE_URL
+  - SUPABASE_KEY
 deferred:
-  - supabase-production-secrets
   - ci-auto-deploy
 ---
 
@@ -18,7 +20,7 @@ deferred:
 
 First production deploy of ChickenDinner to Cloudflare Workers, following the platform decision in `context/foundation/infrastructure.md`. The Worker is live at the URL above; the home page, sign-in page, and middleware-protected `/dashboard` redirect all verified working on the live URL.
 
-The app is currently in **graceful-degradation mode** — `SUPABASE_URL` and `SUPABASE_KEY` are intentionally unset, so the Polish missing-config banner is shown and auth is disabled. The Supabase wiring itself is complete in code (`src/lib/supabase.ts`, `src/middleware.ts`); it activates the moment the Workers Secrets are set. See "Configuring Supabase later" below.
+**Supabase is fully wired and verified end-to-end** (cloud project provisioned by the developer, anon URL + key set as Workers Secrets via `wrangler secret put`, signup + email confirmation + signin + protected route access all tested on the live URL). The missing-config banner is no longer shown.
 
 ## Configuration change applied
 
@@ -83,35 +85,29 @@ npx wrangler tail --status error --format pretty
 
 ## State of secrets
 
-**Workers Secrets currently set:** none.
+**Workers Secrets currently set** (verified via `npx wrangler secret list`):
+- `SUPABASE_URL` — Project URL of the cloud Supabase project (set 2026-05-26)
+- `SUPABASE_KEY` — anon public key of the same project (set 2026-05-26)
 
-**Workers Secrets to be set later:** `SUPABASE_URL`, `SUPABASE_KEY` (see next section).
+Both are `type: secret_text`, encrypted at rest by Cloudflare. Values are NOT recoverable from CLI — to rotate, generate a new value in Supabase dashboard first, then `npx wrangler secret put <NAME>` to overwrite. `wrangler secret put` automatically bumps the Worker version, so secrets take effect within seconds without a separate `wrangler deploy`.
 
 **GitHub Actions secrets:** N/A — repo has no GitHub remote yet. See "Enabling CI auto-deploy later" below.
 
-## Configuring Supabase later (when the cloud project is ready)
+## Supabase setup — what was done (2026-05-26)
 
-The app already has Supabase wiring in `src/lib/supabase.ts` (returns `null` when env is missing) and middleware in `src/middleware.ts` (handles the null case). Adding the secrets activates auth without any code changes.
+The walkthrough that landed the secrets, for future reference / rotation:
 
-1. Create a cloud Supabase project at supabase.com.
-2. Copy credentials from Supabase dashboard → Settings → API: `Project URL` and `anon public key`.
-3. Set as **Workers Secrets** (NOT Pages secrets — see `infrastructure.md` Risk Register row 3):
+1. **Cloud project created** at supabase.com (region: EU; free tier; project name: `chicken-dinner`). Database password saved separately by developer (not stored in this repo). "Automatically expose new tables" left at default ON — safe because every new table must have RLS enabled with `auth.uid() = user_id`-shaped policies per CLAUDE.md.
+2. **URL + anon key copied** from Supabase dashboard → Project Settings → API. The `service_role` key was deliberately NOT used (it bypasses RLS and would have made every user an admin).
+3. **Secrets set** as Workers Secrets (NOT Pages secrets — `infrastructure.md` Risk Register row 3):
    ```bash
-   npx wrangler secret put SUPABASE_URL
-   # paste the Project URL when prompted
-   npx wrangler secret put SUPABASE_KEY
-   # paste the anon public key when prompted
+   npx wrangler secret put SUPABASE_URL  # pasted Project URL
+   npx wrangler secret put SUPABASE_KEY  # pasted anon public key
    ```
-4. Trigger redeploy (Workers Secrets take effect on next deploy):
-   ```bash
-   npx wrangler deploy
-   ```
-5. Verify end-to-end auth on the live URL:
-   - Visit `/auth/signup`, create a test account.
-   - If email confirmation is required (the default), confirm via inbox link OR disable email confirmation in Supabase dashboard → Authentication → Email → "Confirm email" (toggle off for dev convenience, per `README.md`).
-   - Visit `/auth/signin`, sign in.
-   - Visit `/dashboard` — should now render (no redirect) because `context.locals.user` is populated.
-6. To rotate any time: `npx wrangler secret put <NAME>` overwrites; rotate the Supabase key in Supabase dashboard first, then update the Workers Secret.
+   `wrangler secret put` automatically bumped the Worker version — no separate `wrangler deploy` was needed.
+4. **End-to-end verification on live URL**: signup → email confirmation → signin → `/dashboard` rendered (no redirect) → signout → `/dashboard` redirects to `/auth/signin` again. All passed.
+
+**To rotate a secret** (e.g., compromised anon key): generate replacement in Supabase dashboard → Settings → API first, then `npx wrangler secret put SUPABASE_KEY` to overwrite. The new value takes effect within seconds.
 
 ## Enabling CI auto-deploy later
 
