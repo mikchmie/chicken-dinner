@@ -383,15 +383,15 @@ Add `supabase/tests/rls_isolation.sql` — a SQL test that creates two synthetic
 
 #### Automated
 
-- [ ] 2.1 Migration applies on a fresh DB: `npx supabase db reset`
-- [ ] 2.2 Function exists: `select proname from pg_proc where proname = 'create_schedule';` returns one row
-- [ ] 2.3 Lint passes: `npm run lint`
+- [x] 2.1 Migration applies on a fresh DB: `npx supabase db reset`
+- [x] 2.2 Function exists: `select proname from pg_proc where proname = 'create_schedule';` returns one row
+- [x] 2.3 Lint passes: `npm run lint`
 
 #### Manual
 
-- [ ] 2.4 `select create_schedule(array[...]::uuid[])` returns a UUID with a test user's JWT claims set
-- [ ] 2.5 `select count(*) from schedule_days where schedule_id = '<returned-uuid>'` is exactly 7
-- [ ] 2.6 Passing fewer than 7 ids raises the `array_length` guard exception
+- [x] 2.4 `select create_schedule(array[...]::uuid[])` returns a UUID with a test user's JWT claims set
+- [x] 2.5 `select count(*) from schedule_days where schedule_id = '<returned-uuid>'` is exactly 7
+- [x] 2.6 Passing fewer than 7 ids raises the `array_length` guard exception
 
 ### Phase 3: TypeScript domain types
 
