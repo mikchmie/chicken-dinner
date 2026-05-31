@@ -397,14 +397,14 @@ Add `supabase/tests/rls_isolation.sql` — a SQL test that creates two synthetic
 
 #### Automated
 
-- [x] 3.1 File `src/types.ts` exists and every export imports cleanly
-- [x] 3.2 Type check passes: `npx astro sync && npm run lint`
-- [x] 3.3 Prettier-clean: `npm run format` produces no diff
+- [x] 3.1 File `src/types.ts` exists and every export imports cleanly — 02a2407
+- [x] 3.2 Type check passes: `npx astro sync && npm run lint` — 02a2407
+- [x] 3.3 Prettier-clean: `npm run format` produces no diff — 02a2407
 
 #### Manual
 
-- [x] 3.4 Every field in `src/types.ts` uses snake_case matching PostgREST shape
-- [x] 3.5 `CATEGORIES` ordering matches the enum's declared order in the Phase 1 migration
+- [x] 3.4 Every field in `src/types.ts` uses snake_case matching PostgREST shape — 02a2407
+- [x] 3.5 `CATEGORIES` ordering matches the enum's declared order in the Phase 1 migration — 02a2407
 
 ### Phase 4: RLS isolation smoke test
 
