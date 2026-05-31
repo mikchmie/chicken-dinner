@@ -6,7 +6,7 @@ Lay the database foundation for ChickenDinner: tables for `recipes`, `schedules`
 
 ## Current State Analysis
 
-- `supabase/migrations/` is empty — no domain schema exists yet.
+- `supabase/migrations/` does not yet exist or is empty — no domain schema exists yet. `supabase migration new` will create the directory if it does not exist.
 - `supabase/config.toml` is wired (`major_version = 17`, `db.migrations.enabled = true`, `db.seed.enabled = true`, default `seed.sql` path).
 - `src/lib/supabase.ts` uses `@supabase/ssr` with cookie session handling and returns `null` when `SUPABASE_URL`/`SUPABASE_KEY` are missing — every domain query must null-check.
 - `src/env.d.ts` declares `App.Locals.user` as `User | null`.
@@ -85,6 +85,14 @@ Create the schema migration that establishes the `category` enum, `recipes`, `sc
 
 ### Changes Required:
 
+#### 0. Prerequisite: empty seed file
+
+**File**: `supabase/seed.sql`
+
+**Intent**: `config.toml` already references `sql_paths = ["./seed.sql"]` under `[db.seed]` with `enabled = true`. The file does not exist yet — `supabase db reset` will fail when it tries to load it. Create an empty placeholder so the CLI seed step is a no-op. The plan explicitly ships no sample data; this file stays empty throughout F-01.
+
+**Contract**: The file exists and is empty (or contains only a SQL comment). No INSERT statements.
+
 #### 1. Migration file
 
 **File**: `supabase/migrations/<YYYYMMDDHHmmss>_create_recipes_schedules_schema.sql` (timestamp generated at write time via `npx supabase migration new create_recipes_schedules_schema`)
@@ -99,6 +107,8 @@ Create the schema migration that establishes the `category` enum, `recipes`, `sc
 - Table `schedule_days(schedule_id uuid not null references schedules(id) on delete cascade, day_index smallint not null check (day_index between 0 and 6), recipe_id uuid null references recipes(id) on delete set null, primary key (schedule_id, day_index))`.
 - Index `recipes_user_id_idx` on `recipes(user_id)` for the recipe list query (S-01).
 - Index `schedules_user_id_created_at_idx` on `schedules(user_id, created_at desc)` for the "view past schedules" query (FR-009).
+- Extension `moddatetime` installed in the `extensions` schema: `create extension if not exists moddatetime with schema extensions;`. This is the only auto-update mechanism for `updated_at` — without it the column freezes at INSERT time. The extension ships bundled in Supabase's local Docker image.
+- Trigger `set_recipes_updated_at` on `recipes` that fires `BEFORE UPDATE FOR EACH ROW` calling `extensions.moddatetime(updated_at)`. No equivalent trigger is needed for `schedules` (that table has no `updated_at` column).
 - RLS enabled on all three tables.
 - Policy `recipes_owner_all on recipes for all to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id)`.
 - Policy `schedules_owner_all on schedules for all to authenticated using (auth.uid() = user_id) with check (auth.uid() = user_id)`.
@@ -111,16 +121,17 @@ Create the schema migration that establishes the `category` enum, `recipes`, `sc
 #### Automated Verification:
 
 - Migration applies on a fresh local DB: `npx supabase db reset`
-- Tables and policies present: `npx supabase db dump --local --schema public` shows the expected DDL
 - Lint passes: `npm run lint`
 - Astro sync runs: `npx astro sync`
 
 #### Manual Verification:
 
 - Open Studio at `http://localhost:54323` and confirm `recipes`, `schedules`, `schedule_days` tables exist under `public`.
+- DDL spot-check: `npx supabase db dump --local --schema public` — skim output and confirm tables, enum, indexes, and policies are present.
 - Confirm RLS is enabled on each (the lock icon in Studio's Table Editor).
 - Confirm the `category` enum exists under Database → Enumerated Types with the six values in declared order.
 - Sign in as a test user in Studio's SQL editor (set `request.jwt.claims`), insert a recipe, switch to a second user, run `select * from recipes` — confirm zero rows.
+- Confirm the `moddatetime` trigger works: update a recipe's name, then `select updated_at from recipes where id = '<id>'` — the timestamp should be newer than `created_at`.
 
 **Implementation Note**: After completing this phase and all automated verification passes, pause here for manual confirmation that the manual testing was successful before proceeding to the next phase.
 
@@ -354,17 +365,19 @@ Add `supabase/tests/rls_isolation.sql` — a SQL test that creates two synthetic
 
 #### Automated
 
+- [ ] 1.0 Empty `supabase/seed.sql` created (CLI prerequisite)
 - [ ] 1.1 Migration applies on a fresh local DB: `npx supabase db reset`
-- [ ] 1.2 Tables and policies present: `npx supabase db dump --local --schema public` shows the expected DDL
 - [ ] 1.3 Lint passes: `npm run lint`
 - [ ] 1.4 Astro sync runs: `npx astro sync`
 
 #### Manual
 
+- [ ] 1.2 DDL spot-check: `npx supabase db dump --local --schema public` shows tables, enum, indexes, and policies
 - [ ] 1.5 Confirm `recipes`, `schedules`, `schedule_days` tables exist under `public` in Studio
 - [ ] 1.6 Confirm RLS is enabled on each table in Studio
 - [ ] 1.7 Confirm the `category` enum exists with the six values in declared order
 - [ ] 1.8 Cross-user SELECT returns zero rows when a second user queries the first user's recipes
+- [ ] 1.9 `moddatetime` trigger works: updating a recipe name changes `updated_at` to a timestamp newer than `created_at`
 
 ### Phase 2: `create_schedule` RPC migration
 
