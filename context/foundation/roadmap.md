@@ -29,7 +29,7 @@ A home cook with an established recipe repertoire keeps falling back to the same
 
 | ID    | Change ID                       | Outcome (user can …)                                                            | Prerequisites    | PRD refs                            | Status   |
 | ----- | ------------------------------- | ------------------------------------------------------------------------------- | ---------------- | ----------------------------------- | -------- |
-| F-01  | recipes-schedules-data-foundation | (foundation) recipes + schedules schema is in place with per-user RLS         | —                | NFR (data isolation), Guardrail, FR-005, FR-007, FR-008 | ready    |
+| F-01  | recipes-and-schedules-schema | (foundation) recipes + schedules schema is in place with per-user RLS         | —                | NFR (data isolation), Guardrail, FR-005, FR-007, FR-008 | ready    |
 | S-01  | signed-in-empty-home            | sign up, sign in, sign out, and land on an empty ChickenDinner recipe list      | F-01             | FR-001, FR-002, FR-003, FR-004      | proposed |
 | S-02  | add-recipe-to-collection        | add a recipe (name + category) to their collection                              | S-01, F-01       | FR-005                              | proposed |
 | S-03  | first-generated-schedule        | generate a 7-day schedule with no consecutive duplicate meals; view it          | S-02, F-01       | US-01, FR-008, FR-009               | proposed |
@@ -63,7 +63,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 ### F-01: Recipes + schedules schema with per-user RLS
 
 - **Outcome:** (foundation) the database has tables for recipes, schedules, and schedule-day assignments, with row-level security scoping every read/write to the authenticated user; shared TypeScript types are exported for downstream slices.
-- **Change ID:** recipes-schedules-data-foundation
+- **Change ID:** recipes-and-schedules-schema
 - **PRD refs:** Non-Functional Requirements (data isolation), Guardrail (recipes never lost or corrupted), FR-005 (recipe schema: name + category), FR-008 (schedules), FR-007 (deletion cascade contract)
 - **Unlocks:** S-01 (queries the recipes table for the empty-list state), S-02 (write path for recipes), S-03 (write/read path for schedules and the join to recipes), S-05 (the cascade rule lives here)
 - **Prerequisites:** —
@@ -155,12 +155,12 @@ Foundations below assume these are present and do NOT re-scaffold them.
 
 ## Backlog Handoff
 
-| Roadmap ID | Change ID                          | Suggested issue title                                                          | Ready for `/10x-plan` | Notes                                       |
-| ---------- | ---------------------------------- | ------------------------------------------------------------------------------ | --------------------- | ------------------------------------------- |
-| F-01       | recipes-schedules-data-foundation  | Recipes + schedules schema with per-user RLS                                   | yes                   | Run `/10x-plan recipes-schedules-data-foundation` |
-| S-01       | signed-in-empty-home               | Sign-in lands on a ChickenDinner empty recipe list                             | no                    | Promote when F-01 lands                     |
-| S-02       | add-recipe-to-collection           | Add a recipe (name + category) to the user's collection                        | no                    | Promote when S-01 lands                     |
-| S-03       | first-generated-schedule           | Generate first 7-day schedule with no consecutive duplicate meals (north star) | no                    | Promote when S-02 lands                     |
+| Roadmap ID | Change ID                          | Suggested issue title                                                          | Ready for `/10x-plan` | Notes                                        |
+| ---------- | ---------------------------------- | ------------------------------------------------------------------------------ | --------------------- | -------------------------------------------- |
+| F-01       | recipes-and-schedules-schema       | Recipes + schedules schema with per-user RLS                                   | yes                   | Run `/10x-plan recipes-and-schedules-schema` |
+| S-01       | signed-in-empty-home               | Sign-in lands on a ChickenDinner empty recipe list                             | no                    | Promote when F-01 lands                      |
+| S-02       | add-recipe-to-collection           | Add a recipe (name + category) to the user's collection                        | no                    | Promote when S-01 lands                      |
+| S-03       | first-generated-schedule           | Generate first 7-day schedule with no consecutive duplicate meals (north star) | no                    | Promote when S-02 lands                      |
 | S-04       | category-aware-diversity           | Schedule generator also enforces category diversity                            | no                    | Promote when S-03 lands; parallel with S-05, S-06 |
 | S-05       | recipe-edit-delete-with-cascade    | Edit / delete recipe with `[deleted]` cascade in past schedules                | no                    | Promote when S-03 lands; parallel with S-04, S-06 |
 | S-06       | delete-latest-schedule             | Delete most recently generated schedule                                        | no                    | Promote when S-03 lands; parallel with S-04, S-05 |
