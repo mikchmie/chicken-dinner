@@ -6,7 +6,7 @@
 
 begin;
 
-select plan(5);
+select plan(8);
 
 -- -------------------------------------------------------------------------
 -- Setup (running as postgres superuser — bypasses RLS for insert)
@@ -62,7 +62,7 @@ insert into public.schedule_days (schedule_id, day_index) values
 -- -------------------------------------------------------------------------
 
 set local role authenticated;
-set local request.jwt.claims = '{"sub":"00000000-0000-0000-0000-000000000001","role":"authenticated"}';
+set local request.jwt.claims = '{"sub":"00000000-0000-0000-0000-000000000001"}';
 
 -- T1: user A sees exactly their own recipe
 select is(
@@ -83,7 +83,7 @@ select is(
 -- Switch to user B (still authenticated role, change JWT sub)
 -- -------------------------------------------------------------------------
 
-set local request.jwt.claims = '{"sub":"00000000-0000-0000-0000-000000000002","role":"authenticated"}';
+set local request.jwt.claims = '{"sub":"00000000-0000-0000-0000-000000000002"}';
 
 -- T3: user B sees exactly their own recipe
 select is(
@@ -111,13 +111,38 @@ select is(
 
 -- T5: user B cannot see user A schedule_days (scoped through parent)
 set local role authenticated;
-set local request.jwt.claims = '{"sub":"00000000-0000-0000-0000-000000000002","role":"authenticated"}';
+set local request.jwt.claims = '{"sub":"00000000-0000-0000-0000-000000000002"}';
 
 select is(
   (select count(*)::int from public.schedule_days
    where schedule_id = 'cccccccc-cccc-cccc-cccc-cccccccccccc'),
   0,
   'user B: cross-user schedule_days read = 0 rows'
+);
+
+-- -------------------------------------------------------------------------
+-- T6-T8: anon role gets zero rows on all domain tables
+-- -------------------------------------------------------------------------
+
+reset role;
+set local role anon;
+
+select is(
+  (select count(*)::int from public.recipes),
+  0,
+  'anon: recipes = 0 rows'
+);
+
+select is(
+  (select count(*)::int from public.schedules),
+  0,
+  'anon: schedules = 0 rows'
+);
+
+select is(
+  (select count(*)::int from public.schedule_days),
+  0,
+  'anon: schedule_days = 0 rows'
 );
 
 -- -------------------------------------------------------------------------

@@ -92,7 +92,10 @@ create policy schedules_owner_all on public.schedules
   using       (auth.uid() = user_id)
   with check  (auth.uid() = user_id);
 
--- schedule_days: scoped through parent schedules row (no user_id column here)
+-- schedule_days: scoped through parent schedules row (no user_id column here).
+-- The subquery against schedules is itself RLS-filtered, so isolation holds
+-- transitively — user B cannot bypass this by guessing a schedule_id they
+-- don't own, because they can't see that schedule row either.
 create policy schedule_days_owner_all on public.schedule_days
   for all
   to authenticated
