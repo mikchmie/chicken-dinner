@@ -365,19 +365,19 @@ Add `supabase/tests/rls_isolation.sql` — a SQL test that creates two synthetic
 
 #### Automated
 
-- [x] 1.0 Empty `supabase/seed.sql` created (CLI prerequisite)
-- [x] 1.1 Migration applies on a fresh local DB: `npx supabase db reset`
-- [x] 1.3 Lint passes: `npm run lint`
-- [x] 1.4 Astro sync runs: `npx astro sync`
+- [x] 1.0 Empty `supabase/seed.sql` created (CLI prerequisite) — 2cb25ca
+- [x] 1.1 Migration applies on a fresh local DB: `npx supabase db reset` — 2cb25ca
+- [x] 1.3 Lint passes: `npm run lint` — 2cb25ca
+- [x] 1.4 Astro sync runs: `npx astro sync` — 2cb25ca
 
 #### Manual
 
-- [x] 1.2 DDL spot-check: `npx supabase db dump --local --schema public` shows tables, enum, indexes, and policies
-- [x] 1.5 Confirm `recipes`, `schedules`, `schedule_days` tables exist under `public` in Studio
-- [x] 1.6 Confirm RLS is enabled on each table in Studio
-- [x] 1.7 Confirm the `category` enum exists with the six values in declared order
-- [x] 1.8 Cross-user SELECT returns zero rows when a second user queries the first user's recipes
-- [x] 1.9 `moddatetime` trigger works: updating a recipe name changes `updated_at` to a timestamp newer than `created_at`
+- [x] 1.2 DDL spot-check: `npx supabase db dump --local --schema public` shows tables, enum, indexes, and policies — 2cb25ca
+- [x] 1.5 Confirm `recipes`, `schedules`, `schedule_days` tables exist under `public` in Studio — 2cb25ca
+- [x] 1.6 Confirm RLS is enabled on each table in Studio — 2cb25ca
+- [x] 1.7 Confirm the `category` enum exists with the six values in declared order — 2cb25ca
+- [x] 1.8 Cross-user SELECT returns zero rows when a second user queries the first user's recipes — 2cb25ca
+- [x] 1.9 `moddatetime` trigger works: updating a recipe name changes `updated_at` to a timestamp newer than `created_at` — 2cb25ca
 
 ### Phase 2: `create_schedule` RPC migration
 
