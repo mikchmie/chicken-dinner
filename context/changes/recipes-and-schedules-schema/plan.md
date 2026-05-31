@@ -410,11 +410,11 @@ Add `supabase/tests/rls_isolation.sql` — a SQL test that creates two synthetic
 
 #### Automated
 
-- [x] 4.1 `npx supabase test db` runs and reports green for `supabase/tests/rls_isolation.sql`
-- [x] 4.2 `npm run lint` still passes
-- [x] 4.3 Deliberately corrupting the RLS policy (e.g. replacing `auth.uid() = user_id` with `true`) makes the test fail; revert after the check
+- [x] 4.1 `npx supabase test db` runs and reports green for `supabase/tests/rls_isolation.sql` — e5be9a8
+- [x] 4.2 `npm run lint` still passes — e5be9a8
+- [x] 4.3 Deliberately corrupting the RLS policy (e.g. replacing `auth.uid() = user_id` with `true`) makes the test fail; revert after the check — e5be9a8
 
 #### Manual
 
-- [x] 4.4 Assertions cover own-row read, cross-user read denial, cross-user update denial, cross-user `schedule_days` denial through the parent
-- [x] 4.5 Test cleans up synthetic users; re-running `supabase test db` is idempotent
+- [x] 4.4 Assertions cover own-row read, cross-user read denial, cross-user update denial, cross-user `schedule_days` denial through the parent — e5be9a8
+- [x] 4.5 Test cleans up synthetic users; re-running `supabase test db` is idempotent — e5be9a8
