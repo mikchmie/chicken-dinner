@@ -1,0 +1,2 @@
+-- Seed data placeholder. F-01 ships no sample data; this file satisfies the
+-- db.seed.sql_paths reference in config.toml so supabase db reset doesn't error.
