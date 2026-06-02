@@ -338,35 +338,35 @@ No database migration. The `recipes` table and `user_id` column exist from F-01.
 
 #### Automated
 
-- [x] 1.1 Lint + types pass: `npx astro sync && npm run lint`
-- [x] 1.2 Production build succeeds: `npm run build`
-- [x] 1.3 Prettier check: `npx prettier --check src/lib/schemas.ts src/pages/api/recipes/index.ts`
+- [x] 1.1 Lint + types pass: `npx astro sync && npm run lint` — ca994af
+- [x] 1.2 Production build succeeds: `npm run build` — ca994af
+- [x] 1.3 Prettier check: `npx prettier --check src/lib/schemas.ts src/pages/api/recipes/index.ts` — ca994af
 
 #### Manual
 
-- [x] 1.4 POST with valid name + category redirects to `/recipes` and inserts a row in Studio
-- [x] 1.5 POST with empty name redirects to `/recipes/new?error=Nazwa jest wymagana`
-- [x] 1.6 POST with 201-char name redirects with max-length error
-- [x] 1.7 POST with invalid category redirects with "Wybierz kategorię"
-- [x] 1.8 POST without session cookie redirects to `/auth/signin`
+- [x] 1.4 POST with valid name + category redirects to `/recipes` and inserts a row in Studio — ca994af
+- [x] 1.5 POST with empty name redirects to `/recipes/new?error=Nazwa jest wymagana` — ca994af
+- [x] 1.6 POST with 201-char name redirects with max-length error — ca994af
+- [x] 1.7 POST with invalid category redirects with "Wybierz kategorię" — ca994af
+- [x] 1.8 POST without session cookie redirects to `/auth/signin` — ca994af
 
 ### Phase 2: AddRecipeForm component and /recipes/new page
 
 #### Automated
 
-- [ ] 2.1 Lint + types pass: `npx astro sync && npm run lint`
-- [ ] 2.2 Production build succeeds: `npm run build`
-- [ ] 2.3 Prettier check: `npx prettier --check src/components/recipes/AddRecipeForm.tsx src/pages/recipes/new.astro`
+- [x] 2.1 Lint + types pass: `npx astro sync && npm run lint`
+- [x] 2.2 Production build succeeds: `npm run build`
+- [x] 2.3 Prettier check: `npx prettier --check src/components/recipes/AddRecipeForm.tsx src/pages/recipes/new.astro`
 
 #### Manual
 
-- [ ] 2.4 `/recipes/new` renders with cosmic styling, back link, and form
-- [ ] 2.5 Submit with empty name shows inline "Nazwa jest wymagana" error
-- [ ] 2.6 Submit with 201-char name shows inline max-length error
-- [ ] 2.7 Submit with no category selected shows inline "Wybierz kategorię"
-- [ ] 2.8 Valid submission redirects to `/recipes` and recipe appears in list
-- [ ] 2.9 `/recipes/new?error=...` shows the server error below the category field
-- [ ] 2.10 Back link "← Przepisy" navigates to `/recipes`
+- [x] 2.4 `/recipes/new` renders with cosmic styling, back link, and form
+- [x] 2.5 Submit with empty name shows inline "Nazwa jest wymagana" error
+- [x] 2.6 Submit with 201-char name shows inline max-length error
+- [x] 2.7 Submit with no category selected shows inline "Wybierz kategorię"
+- [x] 2.8 Valid submission redirects to `/recipes` and recipe appears in list
+- [x] 2.9 `/recipes/new?error=...` shows the server error below the category field
+- [x] 2.10 Back link "← Przepisy" navigates to `/recipes`
 
 ### Phase 3: Activate the add-recipe affordance on /recipes
 
