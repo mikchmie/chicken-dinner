@@ -372,13 +372,13 @@ No database migration. The `recipes` table and `user_id` column exist from F-01.
 
 #### Automated
 
-- [x] 3.1 Lint + types pass: `npx astro sync && npm run lint`
-- [x] 3.2 Production build succeeds: `npm run build`
-- [x] 3.3 Prettier check: `npx prettier --check src/pages/recipes.astro`
+- [x] 3.1 Lint + types pass: `npx astro sync && npm run lint` — 5ebf34b
+- [x] 3.2 Production build succeeds: `npm run build` — 5ebf34b
+- [x] 3.3 Prettier check: `npx prettier --check src/pages/recipes.astro` — 5ebf34b
 
 #### Manual
 
-- [x] 3.4 `/recipes` (empty) shows heading-row "Dodaj przepis" link; no disabled button, no "wkrótce" text
-- [x] 3.5 `/recipes` (with recipes) shows the list AND the active "Dodaj przepis" link
-- [x] 3.6 Clicking "Dodaj przepis" navigates to `/recipes/new`
-- [x] 3.7 Full round-trip: sign in → empty recipes → add recipe → land on list with new recipe visible
+- [x] 3.4 `/recipes` (empty) shows heading-row "Dodaj przepis" link; no disabled button, no "wkrótce" text — 5ebf34b
+- [x] 3.5 `/recipes` (with recipes) shows the list AND the active "Dodaj przepis" link — 5ebf34b
+- [x] 3.6 Clicking "Dodaj przepis" navigates to `/recipes/new` — 5ebf34b
+- [x] 3.7 Full round-trip: sign in → empty recipes → add recipe → land on list with new recipe visible — 5ebf34b
