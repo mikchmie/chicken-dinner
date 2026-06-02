@@ -23,8 +23,7 @@ export const POST: APIRoute = async (context) => {
 
   const result = RecipeCreateSchema.safeParse(raw);
   if (!result.success) {
-    const message = result.error.issues[0]?.message ?? "Błąd walidacji";
-    return context.redirect(`/recipes/new?error=${encodeURIComponent(message)}`);
+    return context.redirect(`/recipes/new?error=${encodeURIComponent(result.error.issues[0].message)}`);
   }
 
   const { error } = await supabase
@@ -32,6 +31,7 @@ export const POST: APIRoute = async (context) => {
     .insert({ name: result.data.name, category: result.data.category, user_id: user.id });
 
   if (error) {
+    console.error("recipes.insert failed", error);
     return context.redirect(`/recipes/new?error=${encodeURIComponent("Nie udało się dodać przepisu")}`);
   }
 

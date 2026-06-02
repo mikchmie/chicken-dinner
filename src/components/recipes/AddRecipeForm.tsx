@@ -20,7 +20,7 @@ export default function AddRecipeForm({ serverError }: Props) {
 
     if (!name.trim()) {
       next.name = "Nazwa jest wymagana";
-    } else if (name.length > 200) {
+    } else if (name.trim().length > 200) {
       next.name = "Nazwa może mieć maksymalnie 200 znaków";
     }
 
