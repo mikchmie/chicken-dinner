@@ -31,7 +31,7 @@ A home cook with an established recipe repertoire keeps falling back to the same
 | ----- | ------------------------------- | ------------------------------------------------------------------------------- | ---------------- | ----------------------------------- | -------- |
 | F-01  | recipes-and-schedules-schema | (foundation) recipes + schedules schema is in place with per-user RLS         | —                | NFR (data isolation), Guardrail, FR-005, FR-007, FR-008 | ready    |
 | S-01  | signed-in-empty-home            | sign up, sign in, sign out, and land on an empty ChickenDinner recipe list      | F-01             | FR-001, FR-002, FR-003, FR-004      | done     |
-| S-02  | add-recipe-to-collection        | add a recipe (name + category) to their collection                              | S-01, F-01       | FR-005                              | proposed |
+| S-02  | add-recipe-to-collection        | add a recipe (name + category) to their collection                              | S-01, F-01       | FR-005                              | done     |
 | S-03  | first-generated-schedule        | generate a 7-day schedule with no consecutive duplicate meals; view it          | S-02, F-01       | US-01, FR-008, FR-009               | proposed |
 | S-04  | category-aware-diversity        | generate a schedule whose consecutive days also don't share an ingredient category | S-03           | FR-008, Business Logic              | proposed |
 | S-05  | recipe-edit-delete-with-cascade | edit or delete a recipe; deleted recipes show as `[deleted]` in past schedules  | S-03, F-01       | FR-006, FR-007                      | proposed |
@@ -100,7 +100,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Unknowns:**
   - Single source of truth for the six-value category enum — PostgreSQL enum vs. a `zod` enum vs. both, kept in sync via `src/types.ts`? Owner: implementer. Block: no — pick one in `/10x-plan` on S-02 and stick to it across S-03/S-05.
 - **Risk:** this slice introduces the first server endpoint that validates user input — the `zod` pattern set here becomes the template for every later API route. A sloppy contract here ripples; a clean one accelerates S-03 and beyond. Sequenced before S-03 because the north star needs ≥ 5 real recipes to exercise the diversity rule (US-01 Given).
-- **Status:** proposed
+- **Status:** done
 
 ### S-03: User generates their first 7-day schedule with no consecutive duplicate meals
 
@@ -184,3 +184,4 @@ No open cross-cutting questions. PRD's `## Open Questions` section is empty (qua
 (Empty on first generation. `/10x-archive` appends an entry here — and flips that item's `Status` to `done` — when a change whose `Change ID` matches the item is archived. Do NOT pre-populate.)
 
 - **S-01: user can sign up, sign in, sign out, and after signing in see a ChickenDinner-branded landing page that lists their (empty) recipe collection.** — Archived 2026-06-02 → `context/archive/2026-06-02-signed-in-empty-home/`. Lesson: —.
+- **S-02: user can open an add-recipe form, supply a name and a category from the closed list of six, and see the recipe in their collection list.** — Archived 2026-06-02 → `context/archive/2026-06-02-add-recipe-to-collection/`. Lesson: —.
