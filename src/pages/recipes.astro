@@ -1,7 +1,6 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Topbar from "@/components/Topbar.astro";
-import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
 import type { Recipe } from "@/types";
 import { CATEGORY_LABELS_PL } from "@/types";
@@ -44,17 +43,21 @@ if (supabase) {
     <div class="relative z-10 p-4 sm:p-8">
       <Topbar />
       <main class="mx-auto max-w-2xl px-4 py-12">
-        <h1 class="mb-8 text-2xl font-bold text-white">Twoje przepisy</h1>
+        <div class="mb-8 flex items-center justify-between">
+          <h1 class="text-2xl font-bold text-white">Twoje przepisy</h1>
+          <a
+            href="/recipes/new"
+            class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-500"
+          >
+            Dodaj przepis
+          </a>
+        </div>
         {
           recipes.length === 0 ? (
             <div class="rounded-xl border border-white/10 bg-white/5 p-8 text-center backdrop-blur-xl">
-              <p class="mb-6 text-blue-100/70">
+              <p class="text-blue-100/70">
                 Nie masz jeszcze żadnych przepisów. Dodaj pierwszy, aby zacząć układać harmonogramy obiadów.
               </p>
-              <Button disabled title="wkrótce">
-                Dodaj przepis
-              </Button>
-              <p class="mt-3 text-xs text-blue-100/50">wkrótce</p>
             </div>
           ) : (
             <ul class="space-y-2">

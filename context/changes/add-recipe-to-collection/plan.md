@@ -354,31 +354,31 @@ No database migration. The `recipes` table and `user_id` column exist from F-01.
 
 #### Automated
 
-- [x] 2.1 Lint + types pass: `npx astro sync && npm run lint`
-- [x] 2.2 Production build succeeds: `npm run build`
-- [x] 2.3 Prettier check: `npx prettier --check src/components/recipes/AddRecipeForm.tsx src/pages/recipes/new.astro`
+- [x] 2.1 Lint + types pass: `npx astro sync && npm run lint` — fa372c4
+- [x] 2.2 Production build succeeds: `npm run build` — fa372c4
+- [x] 2.3 Prettier check: `npx prettier --check src/components/recipes/AddRecipeForm.tsx src/pages/recipes/new.astro` — fa372c4
 
 #### Manual
 
-- [x] 2.4 `/recipes/new` renders with cosmic styling, back link, and form
-- [x] 2.5 Submit with empty name shows inline "Nazwa jest wymagana" error
-- [x] 2.6 Submit with 201-char name shows inline max-length error
-- [x] 2.7 Submit with no category selected shows inline "Wybierz kategorię"
-- [x] 2.8 Valid submission redirects to `/recipes` and recipe appears in list
-- [x] 2.9 `/recipes/new?error=...` shows the server error below the category field
-- [x] 2.10 Back link "← Przepisy" navigates to `/recipes`
+- [x] 2.4 `/recipes/new` renders with cosmic styling, back link, and form — fa372c4
+- [x] 2.5 Submit with empty name shows inline "Nazwa jest wymagana" error — fa372c4
+- [x] 2.6 Submit with 201-char name shows inline max-length error — fa372c4
+- [x] 2.7 Submit with no category selected shows inline "Wybierz kategorię" — fa372c4
+- [x] 2.8 Valid submission redirects to `/recipes` and recipe appears in list — fa372c4
+- [x] 2.9 `/recipes/new?error=...` shows the server error below the category field — fa372c4
+- [x] 2.10 Back link "← Przepisy" navigates to `/recipes` — fa372c4
 
 ### Phase 3: Activate the add-recipe affordance on /recipes
 
 #### Automated
 
-- [ ] 3.1 Lint + types pass: `npx astro sync && npm run lint`
-- [ ] 3.2 Production build succeeds: `npm run build`
-- [ ] 3.3 Prettier check: `npx prettier --check src/pages/recipes.astro`
+- [x] 3.1 Lint + types pass: `npx astro sync && npm run lint`
+- [x] 3.2 Production build succeeds: `npm run build`
+- [x] 3.3 Prettier check: `npx prettier --check src/pages/recipes.astro`
 
 #### Manual
 
-- [ ] 3.4 `/recipes` (empty) shows heading-row "Dodaj przepis" link; no disabled button, no "wkrótce" text
-- [ ] 3.5 `/recipes` (with recipes) shows the list AND the active "Dodaj przepis" link
-- [ ] 3.6 Clicking "Dodaj przepis" navigates to `/recipes/new`
-- [ ] 3.7 Full round-trip: sign in → empty recipes → add recipe → land on list with new recipe visible
+- [x] 3.4 `/recipes` (empty) shows heading-row "Dodaj przepis" link; no disabled button, no "wkrótce" text
+- [x] 3.5 `/recipes` (with recipes) shows the list AND the active "Dodaj przepis" link
+- [x] 3.6 Clicking "Dodaj przepis" navigates to `/recipes/new`
+- [x] 3.7 Full round-trip: sign in → empty recipes → add recipe → land on list with new recipe visible
