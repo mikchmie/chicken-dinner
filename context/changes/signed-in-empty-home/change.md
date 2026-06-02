@@ -1,7 +1,7 @@
 ---
 change_id: signed-in-empty-home
 title: Sign-in lands on a ChickenDinner empty recipe list
-status: implementing
+status: implemented
 created: 2026-06-02
 updated: 2026-06-02
 archived_at: null

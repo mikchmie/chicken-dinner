@@ -302,18 +302,18 @@ No data migration. The `dashboard.astro` deletion is a code-only change. Existin
 
 #### Automated
 
-- [x] 2.1 Type check passes: `npx astro sync && npm run lint`
-- [x] 2.2 Production build succeeds: `npm run build`
-- [x] 2.3 Prettier check passes for changed files: `npx prettier --check src/layouts/Layout.astro src/components/Welcome.astro src/components/Topbar.astro src/pages/auth/signin.astro src/pages/auth/signup.astro src/pages/auth/confirm-email.astro src/components/auth/SignInForm.tsx src/components/auth/SignUpForm.tsx src/components/auth/PasswordToggle.tsx`
-- [x] 2.4 Grep for residual obvious English on user-visible surfaces returns expected matches only
+- [x] 2.1 Type check passes: `npx astro sync && npm run lint` — f896d23
+- [x] 2.2 Production build succeeds: `npm run build` — f896d23
+- [x] 2.3 Prettier check passes for changed files: `npx prettier --check src/layouts/Layout.astro src/components/Welcome.astro src/components/Topbar.astro src/pages/auth/signin.astro src/pages/auth/signup.astro src/pages/auth/confirm-email.astro src/components/auth/SignInForm.tsx src/components/auth/SignUpForm.tsx src/components/auth/PasswordToggle.tsx` — f896d23
+- [x] 2.4 Grep for residual obvious English on user-visible surfaces returns expected matches only — f896d23
 
 #### Manual
 
-- [x] 2.5 Visiting `/` while signed out shows a Polish ChickenDinner hero with "Zaloguj się" and "Zarejestruj się" CTAs; no starter feature cards
-- [x] 2.6 Browser tab title for `/` reads "ChickenDinner"
-- [x] 2.7 `/auth/signin`, `/auth/signup`, `/auth/confirm-email` are fully Polish in headings, form labels, placeholders, button text, and footer prompts
-- [x] 2.8 Triggering client-side validation on each form (empty submit, bad email, short password, mismatched confirm) shows Polish error messages
-- [x] 2.9 Submitting valid sign-up credentials lands on `/auth/confirm-email` and reads the dev-auto-confirm Polish content in dev mode
-- [x] 2.10 Topbar in both signed-in and signed-out states is fully Polish
-- [x] 2.11 View-source on any page shows `<html lang="pl">`
-- [x] 2.12 The password-visibility toggle on sign-in and sign-up announces in Polish
+- [x] 2.5 Visiting `/` while signed out shows a Polish ChickenDinner hero with "Zaloguj się" and "Zarejestruj się" CTAs; no starter feature cards — f896d23
+- [x] 2.6 Browser tab title for `/` reads "ChickenDinner" — f896d23
+- [x] 2.7 `/auth/signin`, `/auth/signup`, `/auth/confirm-email` are fully Polish in headings, form labels, placeholders, button text, and footer prompts — f896d23
+- [x] 2.8 Triggering client-side validation on each form (empty submit, bad email, short password, mismatched confirm) shows Polish error messages — f896d23
+- [x] 2.9 Submitting valid sign-up credentials lands on `/auth/confirm-email` and reads the dev-auto-confirm Polish content in dev mode — f896d23
+- [x] 2.10 Topbar in both signed-in and signed-out states is fully Polish — f896d23
+- [x] 2.11 View-source on any page shows `<html lang="pl">` — f896d23
+- [x] 2.12 The password-visibility toggle on sign-in and sign-up announces in Polish — f896d23
