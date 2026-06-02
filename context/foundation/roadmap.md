@@ -3,7 +3,7 @@ project: ChickenDinner
 version: 1
 status: draft
 created: 2026-05-31
-updated: 2026-05-31
+updated: 2026-06-02
 prd_version: 1
 main_goal: speed
 top_blocker: time
@@ -30,7 +30,7 @@ A home cook with an established recipe repertoire keeps falling back to the same
 | ID    | Change ID                       | Outcome (user can …)                                                            | Prerequisites    | PRD refs                            | Status   |
 | ----- | ------------------------------- | ------------------------------------------------------------------------------- | ---------------- | ----------------------------------- | -------- |
 | F-01  | recipes-and-schedules-schema | (foundation) recipes + schedules schema is in place with per-user RLS         | —                | NFR (data isolation), Guardrail, FR-005, FR-007, FR-008 | ready    |
-| S-01  | signed-in-empty-home            | sign up, sign in, sign out, and land on an empty ChickenDinner recipe list      | F-01             | FR-001, FR-002, FR-003, FR-004      | proposed |
+| S-01  | signed-in-empty-home            | sign up, sign in, sign out, and land on an empty ChickenDinner recipe list      | F-01             | FR-001, FR-002, FR-003, FR-004      | done     |
 | S-02  | add-recipe-to-collection        | add a recipe (name + category) to their collection                              | S-01, F-01       | FR-005                              | proposed |
 | S-03  | first-generated-schedule        | generate a 7-day schedule with no consecutive duplicate meals; view it          | S-02, F-01       | US-01, FR-008, FR-009               | proposed |
 | S-04  | category-aware-diversity        | generate a schedule whose consecutive days also don't share an ingredient category | S-03           | FR-008, Business Logic              | proposed |
@@ -87,7 +87,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Unknowns:**
   - Keep the starter's `/dashboard` route or relocate the post-login landing (e.g., `/recipes`)? Owner: implementer. Block: no — naming choice; either path satisfies FR-004.
 - **Risk:** small slice but load-bearing — it's where the generic 10x-astro-starter shell becomes the ChickenDinner app. Polish-language copy lands here (CLAUDE.md tripwire); skipping it would push the localisation work into S-02 where it competes with the first write path.
-- **Status:** proposed
+- **Status:** done
 
 ### S-02: User can add a recipe to their collection
 
@@ -182,3 +182,5 @@ No open cross-cutting questions. PRD's `## Open Questions` section is empty (qua
 ## Done
 
 (Empty on first generation. `/10x-archive` appends an entry here — and flips that item's `Status` to `done` — when a change whose `Change ID` matches the item is archived. Do NOT pre-populate.)
+
+- **S-01: user can sign up, sign in, sign out, and after signing in see a ChickenDinner-branded landing page that lists their (empty) recipe collection.** — Archived 2026-06-02 → `context/archive/2026-06-02-signed-in-empty-home/`. Lesson: —.
