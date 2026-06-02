@@ -1,6 +1,7 @@
 ---
 import Layout from "@/layouts/Layout.astro";
 import Topbar from "@/components/Topbar.astro";
+import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase";
 import type { Recipe } from "@/types";
 import { CATEGORY_LABELS_PL } from "@/types";
@@ -18,7 +19,28 @@ if (supabase) {
 ---
 
 <Layout title="Przepisy">
-  <div class="bg-cosmic relative min-h-screen">
+  <div class="bg-cosmic relative min-h-screen w-full overflow-hidden">
+    <!-- Cosmic orbs -->
+    <div
+      class="pointer-events-none absolute top-1/4 -left-24 h-[350px] w-[350px] rounded-full bg-purple-500/20 blur-[120px]"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute top-2/3 -right-16 h-[250px] w-[250px] rounded-full bg-blue-500/15 blur-[100px]"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute top-0 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-indigo-400/10 blur-[140px]"
+    >
+    </div>
+
+    <!-- Star field -->
+    <div
+      class="pointer-events-none absolute inset-0"
+      style="background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px); background-size: 200px 200px, 150px 150px, 100px 100px; background-position: 0 0, 40px 60px, 80px 30px;"
+    >
+    </div>
+
     <div class="relative z-10 p-4 sm:p-8">
       <Topbar />
       <main class="mx-auto max-w-2xl px-4 py-12">
@@ -29,13 +51,9 @@ if (supabase) {
               <p class="mb-6 text-blue-100/70">
                 Nie masz jeszcze żadnych przepisów. Dodaj pierwszy, aby zacząć układać harmonogramy obiadów.
               </p>
-              <button
-                disabled
-                title="wkrótce"
-                class="inline-flex cursor-not-allowed items-center justify-center rounded-md bg-purple-600 px-4 py-2 text-sm font-medium text-white opacity-50"
-              >
+              <Button disabled title="wkrótce">
                 Dodaj przepis
-              </button>
+              </Button>
               <p class="mt-3 text-xs text-blue-100/50">wkrótce</p>
             </div>
           ) : (
