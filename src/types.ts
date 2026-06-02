@@ -1,6 +1,15 @@
 export const CATEGORIES = ["chicken", "pork", "beef", "leguminous", "eggs", "vegetables"] as const;
 export type Category = (typeof CATEGORIES)[number];
 
+export const CATEGORY_LABELS_PL: Record<Category, string> = {
+  chicken: "Kurczak",
+  pork: "Wieprzowina",
+  beef: "Wołowina",
+  leguminous: "Rośliny strączkowe",
+  eggs: "Jajka",
+  vegetables: "Warzywa",
+};
+
 export interface Recipe {
   id: string;
   user_id: string;

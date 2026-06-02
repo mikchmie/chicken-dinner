@@ -285,9 +285,9 @@ No data migration. The `dashboard.astro` deletion is a code-only change. Existin
 
 #### Automated
 
-- [ ] 1.1 Type check passes: `npx astro sync && npm run lint`
-- [ ] 1.2 Production build succeeds: `npm run build`
-- [ ] 1.3 Prettier check passes for changed files: `npx prettier --check src/pages/recipes.astro src/types.ts src/middleware.ts src/pages/api/auth/signin.ts src/components/Topbar.astro`
+- [x] 1.1 Type check passes: `npx astro sync && npm run lint`
+- [x] 1.2 Production build succeeds: `npm run build`
+- [x] 1.3 Prettier check passes for changed files: `npx prettier --check src/pages/recipes.astro src/types.ts src/middleware.ts src/pages/api/auth/signin.ts src/components/Topbar.astro`
 
 #### Manual
 
