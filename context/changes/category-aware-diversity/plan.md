@@ -162,9 +162,9 @@ Add a `makeRecipesMultiCategory` helper that cycles through all 6 categories, an
 
 #### Automated
 
-- [ ] 1.1 All 8 existing tests still pass: `npm run test`
-- [ ] 1.2 Linting passes: `npm run lint`
-- [ ] 1.3 Type checking passes: `npx astro check`
+- [x] 1.1 All 8 existing tests still pass: `npm run test`
+- [x] 1.2 Linting passes: `npm run lint`
+- [x] 1.3 Type checking passes: `npx astro check`
 
 ### Phase 2: Test suite extension
 
