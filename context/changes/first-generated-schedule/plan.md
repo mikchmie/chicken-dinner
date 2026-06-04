@@ -11,7 +11,7 @@ The only genuinely new logic is the generation algorithm — a pure function. Th
 - **Schema + write path exist (F-01).** `schedules`, `schedule_days(schedule_id, day_index 0..6, recipe_id)`, and the `create_schedule(p_day_recipe_ids uuid[])` RPC are in place. The RPC enforces exactly-7, validates recipe ownership, and inserts parent + 7 days atomically under RLS (`supabase/migrations/20260531180052_fix_create_schedule_guards.sql:13-52`).
 - **Read-back type exists.** `ScheduleWithDays { id, user_id, created_at, days: { day_index, recipe: Recipe | null }[] }` (`src/types.ts:34-39`). `Recipe`, `Category`, `CATEGORIES`, `CATEGORY_LABELS_PL` also live there.
 - **App idiom is server-side form-POST → redirect.** The add-recipe endpoint is the template: `prerender = false`, `POST: APIRoute`, `context.locals.user` guard, null-checked `createClient`, then DB call and `context.redirect` (success or `?error=`) (`src/pages/api/recipes/index.ts:5-39`).
-- **Pages are Astro with a cosmic theme + Polish copy.** `src/pages/recipes.astro` shows the list pattern (RLS auto-scopes queries; no `user_id` filter needed — `recipes.astro:8-17`). Nav lives in `src/components/Topbar.astro` (currently a single "Przepisy" link).
+- **Pages are Astro with a cosmic theme + Polish copy.** `src/pages/recipes.astro` shows the list pattern (RLS auto-scopes queries; no `user_id` filter needed — `recipes.astro:8-17`). Nav lives in `src/components/Topbar.astro` (currently a single "Przepisy" link). Feature pages are protected by middleware — `PROTECTED_ROUTES = ["/recipes", "/recipes/new"]` (`src/middleware.ts:4`), using `startsWith` matching (`src/middleware.ts:18`).
 - **No `/schedules` route, no `src/lib/services/`, no schedule-generation code exist yet.**
 - **`zod ^4.4.3` is installed; there is no test runner** (`package.json` scripts: dev/build/preview/astro/lint/lint:fix/format only).
 
@@ -43,7 +43,7 @@ Three phases, each independently verifiable. Phase 1 builds and tests the pure a
 
 ## Critical Implementation Details
 
-- **ESLint type-checked mode + new test files.** ESLint runs with `projectService: true` / `strictTypeChecked` (CLAUDE.md tripwire). Vitest test files and `vitest.config.ts` must be reachable by the TS project service or the lint step fails. Ensure `*.test.ts` files are covered by `tsconfig.json` `include` (or add Vitest globals types via `vitest/globals` in `tsconfig` `types`), and confirm `npx astro sync && npm run lint` stays green after adding the test setup.
+- **ESLint type-checked mode + new test files.** ESLint runs with `projectService: true` / `strictTypeChecked` (CLAUDE.md tripwire). `tsconfig.json` already uses `"include": ["**/*"]` so test files are in scope — no tsconfig change needed. The key constraint: use **explicit imports** in every test file (`import { describe, it, expect } from "vitest"`) rather than Vitest globals. Globals require adding `"types": ["vitest/globals"]` to tsconfig; explicit imports do not. Keep `vitest.config.ts` minimal and avoid Astro-runtime imports in the test path.
 - **Randomized, not seeded.** Each generation must differ (decision: randomized). Tests therefore assert *invariants* (every day filled; no adjacent duplicates when ≥2 distinct recipes), not exact output — plus a variety check that runs generation many times over a large collection and asserts the outputs are not all identical.
 - **Nested PostgREST read ordering.** The schedule read joins `schedule_days` and `recipes`; `day_index` order is not guaranteed by the join, so sort `days` by `day_index` ascending in the page before rendering Dzień 1–7.
 
@@ -61,7 +61,7 @@ Introduce a test runner and implement the pure generation function with full inv
 
 **Intent**: Add Vitest as the project's first test runner so the pure algorithm can be unit-tested; establish the test pattern reused by S-04/S-05.
 
-**Contract**: Add `vitest` (and, if needed, `@vitest/coverage` is *not* required) to `devDependencies`; add a `"test": "vitest run"` script (and optionally `"test:watch": "vitest"`). Add a minimal `vitest.config.ts`. Ensure `*.test.ts` is type-checked by the project (tsconfig `include`/`types`) so `npm run lint` stays green. No Astro-runtime imports in the test path — the function under test is pure TS.
+**Contract**: Add `vitest` to `devDependencies` (`@vitest/coverage` is not required); add a `"test": "vitest run"` script (and optionally `"test:watch": "vitest"`). Add a minimal `vitest.config.ts`. Test files must use explicit imports (`import { describe, it, expect } from "vitest"`) — not globals — so `npm run lint` stays green without a tsconfig change (`**/*` already covers test files). No Astro-runtime imports in the test path — the function under test is pure TS.
 
 #### 2. The generator
 
@@ -183,6 +183,14 @@ Build the read UI: a `/schedules` list page (latest schedule inline, older as li
 
 **Contract**: Add a "Harmonogramy" link to `/schedules` in the authenticated nav group, styled like the existing "Przepisy" link.
 
+#### 4. Middleware route protection
+
+**File**: `src/middleware.ts`
+
+**Intent**: Gate the new schedule pages behind authentication, consistent with how `/recipes` and `/recipes/new` are protected.
+
+**Contract**: Add `"/schedules"` to the `PROTECTED_ROUTES` array (line 4). The existing `startsWith` check at line 18 means this single entry covers both `/schedules` (list) and `/schedules/[id]` (detail) without needing a separate entry.
+
 ### Success Criteria:
 
 #### Automated Verification:
@@ -194,6 +202,7 @@ Build the read UI: a `/schedules` list page (latest schedule inline, older as li
 #### Manual Verification:
 
 - "Harmonogramy" appears in the Topbar when signed in and routes to `/schedules`
+- Unauthenticated direct navigation to `/schedules` redirects to `/auth/signin`
 - With ≥7 varied recipes, "Generuj harmonogram" produces a 7-day plan with no two adjacent days sharing a meal; all 7 days filled
 - With 3 recipes, all 7 days are filled and repeats are non-adjacent
 - Pressing generate twice yields different orderings (randomized)
@@ -252,15 +261,15 @@ No migration. F-01's schema and `create_schedule` RPC are used unchanged.
 
 #### Automated
 
-- [ ] 1.1 Test runner installed and wired: `npm run test` runs and passes
-- [ ] 1.2 Generator invariant tests pass: `npm run test`
-- [ ] 1.3 Type checking passes: `npx astro sync && npx astro check`
-- [ ] 1.4 Linting passes: `npm run lint`
-- [ ] 1.5 Production build succeeds: `npm run build`
+- [x] 1.1 Test runner installed and wired: `npm run test` runs and passes
+- [x] 1.2 Generator invariant tests pass: `npm run test`
+- [x] 1.3 Type checking passes: `npx astro sync && npx astro check`
+- [x] 1.4 Linting passes: `npm run lint`
+- [x] 1.5 Production build succeeds: `npm run build`
 
 #### Manual
 
-- [ ] 1.6 Skim the test cases — the four invariant groups are present and assert behavior
+- [x] 1.6 Skim the test cases — the four invariant groups are present and assert behavior
 
 ### Phase 2: Generate endpoint + persistence
 
@@ -287,10 +296,11 @@ No migration. F-01's schema and `create_schedule` RPC are used unchanged.
 #### Manual
 
 - [ ] 3.4 "Harmonogramy" link appears when signed in and routes to /schedules
-- [ ] 3.5 ≥7 varied recipes → 7-day plan, no adjacent duplicate meals, all filled
-- [ ] 3.6 3 recipes → all 7 days filled, repeats non-adjacent
-- [ ] 3.7 Pressing generate twice yields different orderings
-- [ ] 3.8 Latest schedule renders inline; older schedules link to correct detail page
-- [ ] 3.9 Schedules persist across re-login
-- [ ] 3.10 All copy is Polish; theme matches the recipes page
-- [ ] 3.11 Empty-collection case shows the Polish error and creates nothing
+- [ ] 3.5 Unauthenticated direct navigation to /schedules redirects to /auth/signin
+- [ ] 3.6 ≥7 varied recipes → 7-day plan, no adjacent duplicate meals, all filled
+- [ ] 3.7 3 recipes → all 7 days filled, repeats non-adjacent
+- [ ] 3.8 Pressing generate twice yields different orderings
+- [ ] 3.9 Latest schedule renders inline; older schedules link to correct detail page
+- [ ] 3.10 Schedules persist across re-login
+- [ ] 3.11 All copy is Polish; theme matches the recipes page
+- [ ] 3.12 Empty-collection case shows the Polish error and creates nothing
