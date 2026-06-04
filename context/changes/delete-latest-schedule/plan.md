@@ -168,8 +168,8 @@ No migration required. The existing `ON DELETE CASCADE` and `schedules_owner_all
 
 #### Automated
 
-- [ ] 1.1 `npm run lint` passes on the new file
-- [ ] 1.2 `npm run build` compiles without type errors
+- [x] 1.1 `npm run lint` passes on the new file
+- [x] 1.2 `npm run build` compiles without type errors
 
 #### Manual
 
