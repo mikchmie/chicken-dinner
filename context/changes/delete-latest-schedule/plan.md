@@ -168,26 +168,26 @@ No migration required. The existing `ON DELETE CASCADE` and `schedules_owner_all
 
 #### Automated
 
-- [x] 1.1 `npm run lint` passes on the new file
-- [x] 1.2 `npm run build` compiles without type errors
+- [x] 1.1 `npm run lint` passes on the new file — f81cd79
+- [x] 1.2 `npm run build` compiles without type errors — f81cd79
 
 #### Manual
 
-- [ ] 1.3 Valid POST with latest schedule ID deletes and redirects to `/schedules?deleted=1`
-- [ ] 1.4 POST with non-latest schedule ID redirects to `/schedules?error=...`
-- [ ] 1.5 Unauthenticated POST redirects to `/auth/signin`
+- [x] 1.3 Valid POST with latest schedule ID deletes and redirects to `/schedules?deleted=1`
+- [x] 1.4 POST with non-latest schedule ID redirects to `/schedules?error=...`
+- [x] 1.5 Unauthenticated POST redirects to `/auth/signin`
 
 ### Phase 2: UI wiring
 
 #### Automated
 
-- [ ] 2.1 `npm run lint` passes
-- [ ] 2.2 `npm run build` compiles without errors
+- [x] 2.1 `npm run lint` passes
+- [x] 2.2 `npm run build` compiles without errors
 
 #### Manual
 
-- [ ] 2.3 "Usuń harmonogram" button visible only on latest schedule block
-- [ ] 2.4 Toggle works: click shows confirm state; "Anuluj" resets it
-- [ ] 2.5 Confirmed delete: success banner shown, list updates correctly
-- [ ] 2.6 Deleting last schedule shows empty state, no delete button
-- [ ] 2.7 Direct POST to non-latest ID returns error redirect
+- [x] 2.3 "Usuń harmonogram" button visible only on latest schedule block
+- [x] 2.4 Toggle works: click shows confirm state; "Anuluj" resets it
+- [x] 2.5 Confirmed delete: success banner shown, list updates correctly
+- [x] 2.6 Deleting last schedule shows empty state, no delete button
+- [x] 2.7 Direct POST to non-latest ID returns error redirect
