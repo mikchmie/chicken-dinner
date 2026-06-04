@@ -1,0 +1,128 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Topbar from "@/components/Topbar.astro";
+import { createClient } from "@/lib/supabase";
+import type { ScheduleWithDays } from "@/types";
+import { CATEGORY_LABELS_PL } from "@/types";
+
+const supabase = createClient(Astro.request.headers, Astro.cookies);
+
+let schedules: ScheduleWithDays[] = [];
+
+if (supabase) {
+  const { data } = await supabase
+    .from("schedules")
+    .select("id, created_at, days:schedule_days(day_index, recipe:recipes(id, name, category))")
+    .order("created_at", { ascending: false });
+  if (data) {
+    schedules = data as unknown as ScheduleWithDays[];
+    schedules.forEach((s) => s.days.sort((a, b) => a.day_index - b.day_index));
+  }
+}
+
+const error = Astro.url.searchParams.get("error");
+const latestSchedule = schedules.at(0) ?? null;
+const olderSchedules = schedules.slice(1);
+---
+
+<Layout title="Harmonogramy">
+  <div class="bg-cosmic relative min-h-screen w-full overflow-hidden">
+    <!-- Cosmic orbs -->
+    <div
+      class="pointer-events-none absolute top-1/4 -left-24 h-[350px] w-[350px] rounded-full bg-purple-500/20 blur-[120px]"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute top-2/3 -right-16 h-[250px] w-[250px] rounded-full bg-blue-500/15 blur-[100px]"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute top-0 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-indigo-400/10 blur-[140px]"
+    >
+    </div>
+
+    <!-- Star field -->
+    <div
+      class="pointer-events-none absolute inset-0"
+      style="background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px); background-size: 200px 200px, 150px 150px, 100px 100px; background-position: 0 0, 40px 60px, 80px 30px;"
+    >
+    </div>
+
+    <div class="relative z-10 p-4 sm:p-8">
+      <Topbar />
+      <main class="mx-auto max-w-2xl px-4 py-12">
+        <div class="mb-8 flex items-center justify-between">
+          <h1 class="text-2xl font-bold text-white">Harmonogramy</h1>
+          <form method="POST" action="/api/schedules">
+            <button
+              type="submit"
+              class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-500"
+            >
+              Generuj harmonogram
+            </button>
+          </form>
+        </div>
+
+        {
+          error && (
+            <div class="mb-6 rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-300">
+              {error}
+            </div>
+          )
+        }
+
+        {
+          latestSchedule ? (
+            <div class="mb-8">
+              <h2 class="mb-4 text-lg font-semibold text-white">Najnowszy harmonogram</h2>
+              <ul class="space-y-2">
+                {latestSchedule.days.map((day) => (
+                  <li class="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white backdrop-blur-sm">
+                    <span class="text-sm text-blue-100/60">Dzień {day.day_index + 1}</span>
+                    <span class="font-medium">{day.recipe ? day.recipe.name : "—"}</span>
+                    {day.recipe && (
+                      <span class="text-sm text-blue-100/60">{CATEGORY_LABELS_PL[day.recipe.category]}</span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div class="rounded-xl border border-white/10 bg-white/5 p-8 text-center backdrop-blur-xl">
+              <p class="text-blue-100/70">
+                Nie masz jeszcze żadnych harmonogramów. Naciśnij &quot;Generuj harmonogram&quot;, aby stworzyć pierwszy.
+              </p>
+            </div>
+          )
+        }
+
+        {
+          olderSchedules.length > 0 && (
+            <div>
+              <h2 class="mb-4 text-lg font-semibold text-white">Poprzednie harmonogramy</h2>
+              <ul class="space-y-2">
+                {olderSchedules.map((s) => (
+                  <li>
+                    <a
+                      href={`/schedules/${s.id}`}
+                      class="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white backdrop-blur-sm transition-colors hover:bg-white/10"
+                    >
+                      <span class="text-sm text-blue-100/70">
+                        {new Date(s.created_at).toLocaleDateString("pl-PL", {
+                          year: "numeric",
+                          month: "long",
+                          day: "numeric",
+                        })}
+                      </span>
+                      <span class="text-sm text-purple-300">→</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+      </main>
+    </div>
+  </div>
+</Layout>

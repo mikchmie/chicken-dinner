@@ -275,32 +275,32 @@ No migration. F-01's schema and `create_schedule` RPC are used unchanged.
 
 #### Automated
 
-- [x] 2.1 Type checking passes: `npx astro sync && npx astro check`
-- [x] 2.2 Linting passes: `npm run lint`
-- [x] 2.3 Production build succeeds: `npm run build`
+- [x] 2.1 Type checking passes: `npx astro sync && npx astro check` — ef86e2f
+- [x] 2.2 Linting passes: `npm run lint` — ef86e2f
+- [x] 2.3 Production build succeeds: `npm run build` — ef86e2f
 
 #### Manual
 
-- [ ] 2.4 POST creates a schedule row + 7 schedule_days rows (verify in Studio)
-- [ ] 2.5 Empty collection redirects with the Polish error and creates nothing
-- [ ] 2.6 Generated schedule is visible only to its owner (RLS holds)
+- [x] 2.4 POST creates a schedule row + 7 schedule_days rows (verify in Studio)
+- [x] 2.5 Empty collection redirects with the Polish error and creates nothing
+- [x] 2.6 Generated schedule is visible only to its owner (RLS holds)
 
 ### Phase 3: Schedule view + entry point + nav
 
 #### Automated
 
-- [ ] 3.1 Type checking passes: `npx astro sync && npx astro check`
-- [ ] 3.2 Linting passes: `npm run lint`
-- [ ] 3.3 Production build succeeds: `npm run build`
+- [x] 3.1 Type checking passes: `npx astro sync && npx astro check`
+- [x] 3.2 Linting passes: `npm run lint`
+- [x] 3.3 Production build succeeds: `npm run build`
 
 #### Manual
 
-- [ ] 3.4 "Harmonogramy" link appears when signed in and routes to /schedules
-- [ ] 3.5 Unauthenticated direct navigation to /schedules redirects to /auth/signin
-- [ ] 3.6 ≥7 varied recipes → 7-day plan, no adjacent duplicate meals, all filled
-- [ ] 3.7 3 recipes → all 7 days filled, repeats non-adjacent
-- [ ] 3.8 Pressing generate twice yields different orderings
-- [ ] 3.9 Latest schedule renders inline; older schedules link to correct detail page
-- [ ] 3.10 Schedules persist across re-login
-- [ ] 3.11 All copy is Polish; theme matches the recipes page
-- [ ] 3.12 Empty-collection case shows the Polish error and creates nothing
+- [x] 3.4 "Harmonogramy" link appears when signed in and routes to /schedules
+- [x] 3.5 Unauthenticated direct navigation to /schedules redirects to /auth/signin
+- [x] 3.6 ≥7 varied recipes → 7-day plan, no adjacent duplicate meals, all filled
+- [x] 3.7 3 recipes → all 7 days filled, repeats non-adjacent
+- [x] 3.8 Pressing generate twice yields different orderings
+- [x] 3.9 Latest schedule renders inline; older schedules link to correct detail page
+- [x] 3.10 Schedules persist across re-login
+- [x] 3.11 All copy is Polish; theme matches the recipes page
+- [x] 3.12 Empty-collection case shows the Polish error and creates nothing
