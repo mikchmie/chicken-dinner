@@ -1,10 +1,10 @@
 ---
 change_id: category-aware-diversity
 title: Schedule generator enforces category diversity on consecutive days
-status: impl_reviewed
+status: archived
 created: 2026-06-04
 updated: 2026-06-04
-archived_at: null
+archived_at: 2026-06-04T20:53:35Z
 ---
 
 ## Notes
