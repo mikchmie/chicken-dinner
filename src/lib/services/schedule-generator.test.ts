@@ -1,11 +1,19 @@
 import { describe, it, expect } from "vitest";
 import { generateSchedule } from "./schedule-generator";
 import type { RecipeSlot } from "./schedule-generator";
+import { CATEGORIES } from "@/types";
 
 function makeRecipes(n: number): RecipeSlot[] {
   return Array.from({ length: n }, (_, i) => ({
     id: `recipe-${i}`,
     category: "chicken" as const,
+  }));
+}
+
+function makeRecipesMultiCategory(n: number): RecipeSlot[] {
+  return Array.from({ length: n }, (_, i) => ({
+    id: `recipe-${i}`,
+    category: CATEGORIES[i % CATEGORIES.length],
   }));
 }
 
@@ -81,6 +89,41 @@ describe("generateSchedule", () => {
     const runs = new Set<string>();
     for (let i = 0; i < 30; i++) {
       runs.add(generateSchedule(recipes).join(","));
+    }
+    expect(runs.size).toBeGreaterThan(1);
+  });
+});
+
+describe("category-aware diversity", () => {
+  // (a) diverse collection: no two consecutive days share the same category
+  it("has no adjacent same-category days for a diverse collection", () => {
+    const recipes = makeRecipesMultiCategory(10);
+    const slotById = new Map(recipes.map((r) => [r.id, r]));
+    const result = generateSchedule(recipes);
+    for (let i = 1; i < result.length; i++) {
+      const prev = slotById.get(result[i - 1]);
+      const curr = slotById.get(result[i]);
+      expect(curr?.category).not.toBe(prev?.category);
+    }
+  });
+
+  // (b) single-category collection: fallback path still produces valid output
+  it("produces valid output on a single-category collection via fallback", () => {
+    const result = generateSchedule(makeRecipes(5));
+    expect(result).toHaveLength(7);
+    for (let i = 1; i < result.length; i++) {
+      expect(result[i]).not.toBe(result[i - 1]);
+    }
+  });
+
+  // (c) variety: category arrangements differ across runs on a diverse collection
+  it("produces varied category arrangements across multiple runs", () => {
+    const recipes = makeRecipesMultiCategory(10);
+    const slotById = new Map(recipes.map((r) => [r.id, r]));
+    const runs = new Set<string>();
+    for (let i = 0; i < 20; i++) {
+      const result = generateSchedule(recipes);
+      runs.add(result.map((id) => slotById.get(id)?.category ?? "").join(","));
     }
     expect(runs.size).toBeGreaterThan(1);
   });
