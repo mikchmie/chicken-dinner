@@ -162,19 +162,19 @@ Add a `makeRecipesMultiCategory` helper that cycles through all 6 categories, an
 
 #### Automated
 
-- [x] 1.1 All 8 existing tests still pass: `npm run test`
-- [x] 1.2 Linting passes: `npm run lint`
-- [x] 1.3 Type checking passes: `npx astro check`
+- [x] 1.1 All 8 existing tests still pass: `npm run test` — c557db2
+- [x] 1.2 Linting passes: `npm run lint` — c557db2
+- [x] 1.3 Type checking passes: `npx astro check` — c557db2
 
 ### Phase 2: Test suite extension
 
 #### Automated
 
-- [ ] 2.1 All tests pass (8 existing + 3 new = 11 total): `npm run test`
-- [ ] 2.2 Linting passes: `npm run lint`
-- [ ] 2.3 Type checking passes: `npx astro check`
+- [x] 2.1 All tests pass (8 existing + 3 new = 11 total): `npm run test`
+- [x] 2.2 Linting passes: `npm run lint`
+- [x] 2.3 Type checking passes: `npx astro check`
 
 #### Manual
 
-- [ ] 2.4 Generate with ≥3-category collection; inspect `/schedules` — no two adjacent days share same category label
-- [ ] 2.5 Generate with single-category collection — 7 days filled, no error
+- [x] 2.4 Generate with ≥3-category collection; inspect `/schedules` — no two adjacent days share same category label
+- [x] 2.5 Generate with single-category collection — 7 days filled, no error
