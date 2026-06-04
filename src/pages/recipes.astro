@@ -1,0 +1,76 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Topbar from "@/components/Topbar.astro";
+import { createClient } from "@/lib/supabase";
+import type { Recipe } from "@/types";
+import { CATEGORY_LABELS_PL } from "@/types";
+
+const supabase = createClient(Astro.request.headers, Astro.cookies);
+
+let recipes: Pick<Recipe, "id" | "name" | "category">[] = [];
+
+if (supabase) {
+  const { data } = await supabase.from("recipes").select("id, name, category").order("name", { ascending: true });
+  if (data) {
+    recipes = data;
+  }
+}
+---
+
+<Layout title="Przepisy">
+  <div class="bg-cosmic relative min-h-screen w-full overflow-hidden">
+    <!-- Cosmic orbs -->
+    <div
+      class="pointer-events-none absolute top-1/4 -left-24 h-[350px] w-[350px] rounded-full bg-purple-500/20 blur-[120px]"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute top-2/3 -right-16 h-[250px] w-[250px] rounded-full bg-blue-500/15 blur-[100px]"
+    >
+    </div>
+    <div
+      class="pointer-events-none absolute top-0 left-1/2 h-[300px] w-[300px] -translate-x-1/2 rounded-full bg-indigo-400/10 blur-[140px]"
+    >
+    </div>
+
+    <!-- Star field -->
+    <div
+      class="pointer-events-none absolute inset-0"
+      style="background-image: radial-gradient(circle, rgba(255,255,255,0.15) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px), radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px); background-size: 200px 200px, 150px 150px, 100px 100px; background-position: 0 0, 40px 60px, 80px 30px;"
+    >
+    </div>
+
+    <div class="relative z-10 p-4 sm:p-8">
+      <Topbar />
+      <main class="mx-auto max-w-2xl px-4 py-12">
+        <div class="mb-8 flex items-center justify-between">
+          <h1 class="text-2xl font-bold text-white">Twoje przepisy</h1>
+          <a
+            href="/recipes/new"
+            class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-purple-500"
+          >
+            Dodaj przepis
+          </a>
+        </div>
+        {
+          recipes.length === 0 ? (
+            <div class="rounded-xl border border-white/10 bg-white/5 p-8 text-center backdrop-blur-xl">
+              <p class="text-blue-100/70">
+                Nie masz jeszcze żadnych przepisów. Dodaj pierwszy, aby zacząć układać harmonogramy obiadów.
+              </p>
+            </div>
+          ) : (
+            <ul class="space-y-2">
+              {recipes.map((recipe) => (
+                <li class="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white backdrop-blur-sm">
+                  <span class="font-medium">{recipe.name}</span>
+                  <span class="text-sm text-blue-100/60">{CATEGORY_LABELS_PL[recipe.category]}</span>
+                </li>
+              ))}
+            </ul>
+          )
+        }
+      </main>
+    </div>
+  </div>
+</Layout>
