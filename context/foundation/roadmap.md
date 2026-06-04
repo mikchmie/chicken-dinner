@@ -3,7 +3,7 @@ project: ChickenDinner
 version: 1
 status: draft
 created: 2026-05-31
-updated: 2026-06-02
+updated: 2026-06-04
 prd_version: 1
 main_goal: speed
 top_blocker: time
@@ -32,7 +32,7 @@ A home cook with an established recipe repertoire keeps falling back to the same
 | F-01  | recipes-and-schedules-schema | (foundation) recipes + schedules schema is in place with per-user RLS         | —                | NFR (data isolation), Guardrail, FR-005, FR-007, FR-008 | ready    |
 | S-01  | signed-in-empty-home            | sign up, sign in, sign out, and land on an empty ChickenDinner recipe list      | F-01             | FR-001, FR-002, FR-003, FR-004      | done     |
 | S-02  | add-recipe-to-collection        | add a recipe (name + category) to their collection                              | S-01, F-01       | FR-005                              | done     |
-| S-03  | first-generated-schedule        | generate a 7-day schedule with no consecutive duplicate meals; view it          | S-02, F-01       | US-01, FR-008, FR-009               | proposed |
+| S-03  | first-generated-schedule        | generate a 7-day schedule with no consecutive duplicate meals; view it          | S-02, F-01       | US-01, FR-008, FR-009               | done     |
 | S-04  | category-aware-diversity        | generate a schedule whose consecutive days also don't share an ingredient category | S-03           | FR-008, Business Logic              | proposed |
 | S-05  | recipe-edit-delete-with-cascade | edit or delete a recipe; deleted recipes show as `[deleted]` in past schedules  | S-03, F-01       | FR-006, FR-007                      | proposed |
 | S-06  | delete-latest-schedule          | delete their most recently generated schedule                                   | S-03             | FR-010                              | proposed |
@@ -113,7 +113,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Unknowns:**
   - When the collection has fewer than 7 recipes, is repetition allowed on non-adjacent days, or does the algorithm relax the no-consecutive-meal rule too? Owner: implementer. Block: no — PRD says best-effort and never refuses; both shapes satisfy that.
 - **Risk:** this is the north star. It introduces the schedule storage shape (which S-05's cascade and S-06's delete depend on) and the first generation algorithm. Acceptance Criteria for US-01 is the bar; the category-aware refinement is deferred to S-04 so the north star ships before algorithm polish.
-- **Status:** proposed
+- **Status:** done
 
 ### S-04: Schedule generator also enforces category diversity
 
@@ -185,3 +185,4 @@ No open cross-cutting questions. PRD's `## Open Questions` section is empty (qua
 
 - **S-01: user can sign up, sign in, sign out, and after signing in see a ChickenDinner-branded landing page that lists their (empty) recipe collection.** — Archived 2026-06-02 → `context/archive/2026-06-02-signed-in-empty-home/`. Lesson: —.
 - **S-02: user can open an add-recipe form, supply a name and a category from the closed list of six, and see the recipe in their collection list.** — Archived 2026-06-02 → `context/archive/2026-06-02-add-recipe-to-collection/`. Lesson: —.
+- **S-03: user with ≥ 5 recipes presses "generate" and sees an ordered 7-day schedule drawn from their collection, where no two adjacent days share the same meal; the schedule is persisted and visible on revisit.** — Archived 2026-06-04 → `context/archive/2026-06-03-first-generated-schedule/`. Lesson: —.
