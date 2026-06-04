@@ -261,23 +261,23 @@ No migration. F-01's schema and `create_schedule` RPC are used unchanged.
 
 #### Automated
 
-- [x] 1.1 Test runner installed and wired: `npm run test` runs and passes
-- [x] 1.2 Generator invariant tests pass: `npm run test`
-- [x] 1.3 Type checking passes: `npx astro sync && npx astro check`
-- [x] 1.4 Linting passes: `npm run lint`
-- [x] 1.5 Production build succeeds: `npm run build`
+- [x] 1.1 Test runner installed and wired: `npm run test` runs and passes — 658d724
+- [x] 1.2 Generator invariant tests pass: `npm run test` — 658d724
+- [x] 1.3 Type checking passes: `npx astro sync && npx astro check` — 658d724
+- [x] 1.4 Linting passes: `npm run lint` — 658d724
+- [x] 1.5 Production build succeeds: `npm run build` — 658d724
 
 #### Manual
 
-- [x] 1.6 Skim the test cases — the four invariant groups are present and assert behavior
+- [x] 1.6 Skim the test cases — the four invariant groups are present and assert behavior — 658d724
 
 ### Phase 2: Generate endpoint + persistence
 
 #### Automated
 
-- [ ] 2.1 Type checking passes: `npx astro sync && npx astro check`
-- [ ] 2.2 Linting passes: `npm run lint`
-- [ ] 2.3 Production build succeeds: `npm run build`
+- [x] 2.1 Type checking passes: `npx astro sync && npx astro check`
+- [x] 2.2 Linting passes: `npm run lint`
+- [x] 2.3 Production build succeeds: `npm run build`
 
 #### Manual
 
