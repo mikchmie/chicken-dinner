@@ -348,12 +348,12 @@ Key oracle discipline:
 
 #### Automated
 
-- [ ] 1.1 `npm test` passes with new n=0, n=2 (100 runs), n=7 (100 runs) cases
-- [ ] 1.2 `npx tsc --noEmit` passes
+- [x] 1.1 `npm test` passes with new n=0, n=2 (100 runs), n=7 (100 runs) cases
+- [x] 1.2 `npx tsc --noEmit` passes
 
 #### Manual
 
-- [ ] 1.3 New describe block and 3 cases visible in reporter output
+- [x] 1.3 New describe block and 3 cases visible in reporter output
 
 ### Phase 2: Hard Invariant — No Adjacent Same Meal, Multi-Run
 

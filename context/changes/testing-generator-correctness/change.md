@@ -1,7 +1,7 @@
 ---
 change_id: testing-generator-correctness
 title: "Generator correctness & robustness: best-effort and diversity unit tests"
-status: planned
+status: implementing
 created: 2026-06-16
 updated: 2026-06-16
 archived_at: null

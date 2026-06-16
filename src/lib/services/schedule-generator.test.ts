@@ -128,3 +128,37 @@ describe("category-aware diversity", () => {
     expect(runs.size).toBeGreaterThan(1);
   });
 });
+
+// Oracle: US-01 best-effort ("never refuses for n ≥ 1"); research.md §Correction for n=0.
+describe("best-effort contract — boundary sizes", () => {
+  // n=0: pin the empty-input contract (guarded upstream at the endpoint)
+  it("returns [] for an empty collection", () => {
+    expect(generateSchedule([])).toEqual([]);
+  });
+
+  // n=2: smallest multi-recipe input — length and set-containment over 100 runs
+  it("returns 7 ids from the collection across 100 runs (n=2)", () => {
+    const recipes = makeRecipes(2);
+    const ids = new Set(recipes.map((r) => r.id));
+    for (let i = 0; i < 100; i++) {
+      const result = generateSchedule(recipes);
+      expect(result).toHaveLength(7);
+      result.forEach((id) => {
+        expect(ids.has(id)).toBe(true);
+      });
+    }
+  });
+
+  // n=7: distinct-vs-repeat boundary — length and set-containment over 100 runs
+  it("returns 7 ids from the collection across 100 runs (n=7)", () => {
+    const recipes = makeRecipes(7);
+    const ids = new Set(recipes.map((r) => r.id));
+    for (let i = 0; i < 100; i++) {
+      const result = generateSchedule(recipes);
+      expect(result).toHaveLength(7);
+      result.forEach((id) => {
+        expect(ids.has(id)).toBe(true);
+      });
+    }
+  });
+});
