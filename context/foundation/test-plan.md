@@ -77,7 +77,7 @@ orchestrator updates Status as artifacts appear on disk.
 
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
-| 1 | Generator correctness & robustness | Defend the north-star algorithm at the cheapest layer — invariants and best-effort degradation on adversarial inputs | #1, #2 | unit | implementing | context/changes/testing-generator-correctness/ |
+| 1 | Generator correctness & robustness | Defend the north-star algorithm at the cheapest layer — invariants and best-effort degradation on adversarial inputs | #1, #2 | unit | complete | context/changes/testing-generator-correctness/ |
 | 2 | Data-isolation & RPC integrity | Prove cross-user isolation and correct schedule-RPC writes; wire the dormant SQL isolation harness | #3, #4 | integration + SQL harness | not started | — |
 | 3 | API contract & input validation | Server rejects out-of-list categories and malformed payloads, and enforces ownership on schedule endpoints | #5, #3 (IDOR slice) | integration | not started | — |
 | 4 | Recipe delete-cascade safety | The `[deleted]` contract holds in past schedules; ships with roadmap S-05 | #6 | integration | not started | — |
