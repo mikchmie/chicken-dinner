@@ -12,14 +12,21 @@ export function generateSchedule(recipes: RecipeSlot[]): string[] {
   const result: string[] = [];
   // Track the day index each recipe was last used (-1 = never used).
   const lastUsed = new Map<string, number>(recipes.map((r) => [r.id, -1]));
+  const categoryOf = new Map<string, Category>(recipes.map((r) => [r.id, r.category]));
 
   for (let day = 0; day < DAYS; day++) {
     const previousId = day > 0 ? result[day - 1] : null;
+    const previousCategory = previousId !== null ? categoryOf.get(previousId) : undefined;
 
-    // Candidates: all recipes except the immediately previous one.
-    let candidates = recipes.filter((r) => r.id !== previousId);
+    // Tier 1: exclude previous meal AND previous category.
+    let candidates = recipes.filter((r) => r.id !== previousId && r.category !== previousCategory);
 
-    // Fallback: single-recipe collection — allow the repeat.
+    // Tier 2: relax category constraint — keep meal uniqueness.
+    if (candidates.length === 0) {
+      candidates = recipes.filter((r) => r.id !== previousId);
+    }
+
+    // Tier 3 fallback: single-recipe collection — allow the repeat.
     if (candidates.length === 0) {
       candidates = recipes;
     }
