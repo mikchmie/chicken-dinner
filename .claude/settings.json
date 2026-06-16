@@ -1,0 +1,21 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'FILE=$(jq -r .tool_input.file_path) && npx eslint --fix \"$FILE\"'",
+            "timeout": 3000
+          },
+          {
+            "type": "command",
+            "command": "npx tsc --noEmit 1>&2",
+            "timeout": 30000
+          }
+        ]
+      }
+    ]
+  }
+}
