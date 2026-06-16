@@ -162,3 +162,29 @@ describe("best-effort contract — boundary sizes", () => {
     }
   });
 });
+
+// Oracle: US-01 AC hard no-consecutive-meal invariant — unconditional for n≥2.
+// Multi-run neutralises Math.random() tie-break without a seeding seam.
+describe("hard invariant — no adjacent same meal, multi-run", () => {
+  // n=2: forced strict alternation — the T1/T2 boundary
+  it("has no adjacent same meal across 100 runs (n=2)", () => {
+    const recipes = makeRecipes(2);
+    for (let i = 0; i < 100; i++) {
+      const result = generateSchedule(recipes);
+      for (let d = 1; d < result.length; d++) {
+        expect(result[d]).not.toBe(result[d - 1]);
+      }
+    }
+  });
+
+  // n=7: distinct-vs-repeat boundary — LRU edge case where all recipes used exactly once
+  it("has no adjacent same meal across 100 runs (n=7)", () => {
+    const recipes = makeRecipes(7);
+    for (let i = 0; i < 100; i++) {
+      const result = generateSchedule(recipes);
+      for (let d = 1; d < result.length; d++) {
+        expect(result[d]).not.toBe(result[d - 1]);
+      }
+    }
+  });
+});
