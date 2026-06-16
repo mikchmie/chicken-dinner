@@ -359,24 +359,24 @@ Key oracle discipline:
 
 #### Automated
 
-- [x] 2.1 `npm test` passes with n=2 (100 runs) and n=7 (100 runs) adjacency cases
-- [x] 2.2 `npx tsc --noEmit` passes
+- [x] 2.1 `npm test` passes with n=2 (100 runs) and n=7 (100 runs) adjacency cases — 9aa4451
+- [x] 2.2 `npx tsc --noEmit` passes — 9aa4451
 
 #### Manual
 
-- [x] 2.3 `"hard invariant — no adjacent same meal, multi-run"` block with 2 cases visible
+- [x] 2.3 `"hard invariant — no adjacent same meal, multi-run"` block with 2 cases visible — 9aa4451
 
 ### Phase 3: Relaxation-Order Guarantee & Category Scarcity
 
 #### Automated
 
-- [ ] 3.1 `npm test` passes with 50-run companion and 3 scarcity cases
-- [ ] 3.2 `npx tsc --noEmit` passes
+- [x] 3.1 `npm test` passes with 50-run companion and 3 scarcity cases
+- [x] 3.2 `npx tsc --noEmit` passes
 
 #### Manual
 
-- [ ] 3.3 `"category-aware diversity — scarcity"` block with 3 cases visible in reporter
-- [ ] 3.4 50-run companion visible inside `"category-aware diversity"` block
+- [x] 3.3 `"category-aware diversity — scarcity"` block with 3 cases visible in reporter
+- [x] 3.4 50-run companion visible inside `"category-aware diversity"` block
 
 ### Phase 4: §6.1 Cookbook Update
 
