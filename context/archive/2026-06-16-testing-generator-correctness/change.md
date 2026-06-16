@@ -1,10 +1,10 @@
 ---
 change_id: testing-generator-correctness
 title: "Generator correctness & robustness: best-effort and diversity unit tests"
-status: impl_reviewed
+status: archived
 created: 2026-06-16
 updated: 2026-06-16
-archived_at: null
+archived_at: 2026-06-16T14:56:13Z
 ---
 
 ## Notes
