@@ -9,7 +9,7 @@ export default function DeleteScheduleButton({ scheduleId }: Props) {
 
   if (confirming) {
     return (
-      <form method="post" action={`/api/schedules/${scheduleId}`} className="flex gap-2">
+      <form method="POST" action={`/api/schedules/${scheduleId}`} className="flex gap-2">
         <button
           type="submit"
           className="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-red-500"
