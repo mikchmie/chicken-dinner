@@ -17,6 +17,20 @@ function makeRecipesMultiCategory(n: number): RecipeSlot[] {
   }));
 }
 
+// Skewed fixture: 5 chicken + 2 pork = 7 recipes. T1 is constrained to ≤2 minority-category
+// candidates, exercising LRU cycling under category pressure (the FR-008 scarcity scenario).
+function makeRecipesSkewed(): RecipeSlot[] {
+  return [
+    { id: "c0", category: "chicken" },
+    { id: "c1", category: "chicken" },
+    { id: "c2", category: "chicken" },
+    { id: "c3", category: "chicken" },
+    { id: "c4", category: "chicken" },
+    { id: "p0", category: "pork" },
+    { id: "p1", category: "pork" },
+  ];
+}
+
 describe("generateSchedule", () => {
   // (a) ≥7 distinct recipes
   it("returns exactly 7 ids for a large collection", () => {
@@ -178,20 +192,6 @@ describe("best-effort contract — boundary sizes", () => {
     }
   });
 });
-
-// Skewed fixture: 5 chicken + 2 pork = 7 recipes. T1 is constrained to ≤2 minority-category
-// candidates, exercising LRU cycling under category pressure (the FR-008 scarcity scenario).
-function makeRecipesSkewed(): RecipeSlot[] {
-  return [
-    { id: "c0", category: "chicken" },
-    { id: "c1", category: "chicken" },
-    { id: "c2", category: "chicken" },
-    { id: "c3", category: "chicken" },
-    { id: "c4", category: "chicken" },
-    { id: "p0", category: "pork" },
-    { id: "p1", category: "pork" },
-  ];
-}
 
 // Oracle: US-01 AC (hard) + FR-008 relaxation-order guarantee (soft).
 // The skewed fixture is multi-category, so T1 is always non-empty → zero adjacent
