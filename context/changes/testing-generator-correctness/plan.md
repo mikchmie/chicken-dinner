@@ -370,21 +370,21 @@ Key oracle discipline:
 
 #### Automated
 
-- [x] 3.1 `npm test` passes with 50-run companion and 3 scarcity cases
-- [x] 3.2 `npx tsc --noEmit` passes
+- [x] 3.1 `npm test` passes with 50-run companion and 3 scarcity cases — 30148e1
+- [x] 3.2 `npx tsc --noEmit` passes — 30148e1
 
 #### Manual
 
-- [x] 3.3 `"category-aware diversity — scarcity"` block with 3 cases visible in reporter
-- [x] 3.4 50-run companion visible inside `"category-aware diversity"` block
+- [x] 3.3 `"category-aware diversity — scarcity"` block with 3 cases visible in reporter — 30148e1
+- [x] 3.4 50-run companion visible inside `"category-aware diversity"` block — 30148e1
 
 ### Phase 4: §6.1 Cookbook Update
 
 #### Automated
 
-- [ ] 4.1 `npm test` still exits 0 (no regressions from prose edit)
+- [x] 4.1 `npm test` still exits 0 (no regressions from prose edit)
 
 #### Manual
 
-- [ ] 4.2 `test-plan.md §6.1` placeholder replaced with location, naming, patterns, run command, and reference test
-- [ ] 4.3 `test-plan.md §3` Phase 1 row shows status `planned`
+- [x] 4.2 `test-plan.md §6.1` placeholder replaced with location, naming, patterns, run command, and reference test
+- [x] 4.3 `test-plan.md §3` Phase 1 row shows status `planned`

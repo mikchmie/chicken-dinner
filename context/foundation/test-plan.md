@@ -77,7 +77,7 @@ orchestrator updates Status as artifacts appear on disk.
 
 | # | Phase name | Goal (one line) | Risks covered | Test types | Status | Change folder |
 |---|---|---|---|---|---|---|
-| 1 | Generator correctness & robustness | Defend the north-star algorithm at the cheapest layer — invariants and best-effort degradation on adversarial inputs | #1, #2 | unit | planned | context/changes/testing-generator-correctness/ |
+| 1 | Generator correctness & robustness | Defend the north-star algorithm at the cheapest layer — invariants and best-effort degradation on adversarial inputs | #1, #2 | unit | implementing | context/changes/testing-generator-correctness/ |
 | 2 | Data-isolation & RPC integrity | Prove cross-user isolation and correct schedule-RPC writes; wire the dormant SQL isolation harness | #3, #4 | integration + SQL harness | not started | — |
 | 3 | API contract & input validation | Server rejects out-of-list categories and malformed payloads, and enforces ownership on schedule endpoints | #5, #3 (IDOR slice) | integration | not started | — |
 | 4 | Recipe delete-cascade safety | The `[deleted]` contract holds in past schedules; ships with roadmap S-05 | #6 | integration | not started | — |
@@ -135,7 +135,102 @@ the relevant rollout phase ships; before that, the sub-section reads
 
 ### 6.1 Adding a unit test (generator and pure logic)
 
-TBD — see §3 Phase 1 (generator best-effort + diversity-invariant pattern). Reference test today: `src/lib/services/schedule-generator.test.ts`; run with `npm test`.
+**Location**: `src/lib/services/` — co-locate the test file with the source under test. No
+separate `__tests__` directory.
+
+**Naming**: `<source-file>.test.ts` — e.g., `schedule-generator.test.ts`.
+
+**Run command**: `npm test` (runs `vitest run`).
+
+**Reference test**: `src/lib/services/schedule-generator.test.ts` — the
+`describe("hard invariant — no adjacent same meal, multi-run")` block is the canonical
+example of the multi-run invariant pattern.
+
+---
+
+**Pattern 1 — Best-effort contract (boundary sizes)**
+
+One `describe` block per contract boundary. Use `makeRecipes(n)` for single-category
+fixtures. Loop ≥ 100 runs for n-boundary tests; assert length and set-containment inside
+the loop. Pin degenerate cases (`n = 0`) with a single deterministic assertion — do not
+apply the 7-day length expectation to the empty case.
+
+```ts
+describe("best-effort contract — boundary sizes", () => {
+  it("returns [] for an empty collection", () => {
+    expect(generateSchedule([])).toEqual([]);
+  });
+
+  it("returns 7 ids from the collection across 100 runs (n=2)", () => {
+    const recipes = makeRecipes(2);
+    const ids = new Set(recipes.map((r) => r.id));
+    for (let i = 0; i < 100; i++) {
+      const result = generateSchedule(recipes);
+      expect(result).toHaveLength(7);
+      result.forEach((id) => expect(ids.has(id)).toBe(true));
+    }
+  });
+});
+```
+
+**Pattern 2 — Hard invariant, multi-run**
+
+Loop ≥ 100 runs on adversarial sizes (`n = 2` forces strict alternation; `n = 7` is the
+distinct-vs-repeat boundary). Assert the adjacency invariant inside the loop — a
+single-run check can miss violations reachable only on certain `Math.random()` tie-breaks.
+Do not seed or patch `Math.random()`; looping is the correct neutralisation technique.
+
+```ts
+describe("hard invariant — no adjacent same meal, multi-run", () => {
+  it("has no adjacent same meal across 100 runs (n=2)", () => {
+    const recipes = makeRecipes(2);
+    for (let i = 0; i < 100; i++) {
+      const result = generateSchedule(recipes);
+      for (let d = 1; d < result.length; d++) {
+        expect(result[d]).not.toBe(result[d - 1]);
+      }
+    }
+  });
+});
+```
+
+**Pattern 3 — Category scarcity / relaxation-order guarantee**
+
+Use a skewed fixture (majority category + small minority) to exercise the T1 tier under
+pressure. Since the fixture is multi-category, T1 is always non-empty → zero adjacent
+same-category pairs is the correct oracle (not a combinatorial minimum). Loop ≥ 100 runs.
+Assert both the hard (no adjacent same meal) and soft (no adjacent same category) invariants.
+
+```ts
+function makeRecipesSkewed(): RecipeSlot[] {
+  return [
+    { id: "c0", category: "chicken" }, { id: "c1", category: "chicken" },
+    { id: "c2", category: "chicken" }, { id: "c3", category: "chicken" },
+    { id: "c4", category: "chicken" },
+    { id: "p0", category: "pork" },   { id: "p1", category: "pork" },
+  ];
+}
+
+describe("category-aware diversity — scarcity", () => {
+  it("has no adjacent same-category days across 100 runs (skewed collection)", () => {
+    const recipes = makeRecipesSkewed();
+    const categoryOf = new Map(recipes.map((r) => [r.id, r.category]));
+    for (let i = 0; i < 100; i++) {
+      const result = generateSchedule(recipes);
+      for (let d = 1; d < result.length; d++) {
+        expect(categoryOf.get(result[d])).not.toBe(categoryOf.get(result[d - 1]));
+      }
+    }
+  });
+});
+```
+
+**Anti-patterns to avoid**:
+- Asserting 7 days for the empty (`n = 0`) case — the contract is `→ []`.
+- Single-run invariant assertions — tie-break violations can be invisible on one draw.
+- Asserting a combinatorial minimum of same-category adjacencies — the algorithm is greedy
+  + randomized, not optimal; that oracle is flaky on correct output.
+- Assertions lifted from the implementation's own output (oracle problem).
 
 ### 6.2 Adding an integration test (Supabase-backed)
 
