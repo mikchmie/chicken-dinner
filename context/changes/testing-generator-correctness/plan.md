@@ -382,9 +382,9 @@ Key oracle discipline:
 
 #### Automated
 
-- [x] 4.1 `npm test` still exits 0 (no regressions from prose edit)
+- [x] 4.1 `npm test` still exits 0 (no regressions from prose edit) — b5e0e3e
 
 #### Manual
 
-- [x] 4.2 `test-plan.md §6.1` placeholder replaced with location, naming, patterns, run command, and reference test
-- [x] 4.3 `test-plan.md §3` Phase 1 row shows status `planned`
+- [x] 4.2 `test-plan.md §6.1` placeholder replaced with location, naming, patterns, run command, and reference test — b5e0e3e
+- [x] 4.3 `test-plan.md §3` Phase 1 row shows status `planned` — b5e0e3e
