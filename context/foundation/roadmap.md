@@ -3,7 +3,7 @@ project: ChickenDinner
 version: 1
 status: draft
 created: 2026-05-31
-updated: 2026-06-04
+updated: 2026-06-16
 prd_version: 1
 main_goal: speed
 top_blocker: time
@@ -33,9 +33,9 @@ A home cook with an established recipe repertoire keeps falling back to the same
 | S-01  | signed-in-empty-home            | sign up, sign in, sign out, and land on an empty ChickenDinner recipe list      | F-01             | FR-001, FR-002, FR-003, FR-004      | done     |
 | S-02  | add-recipe-to-collection        | add a recipe (name + category) to their collection                              | S-01, F-01       | FR-005                              | done     |
 | S-03  | first-generated-schedule        | generate a 7-day schedule with no consecutive duplicate meals; view it          | S-02, F-01       | US-01, FR-008, FR-009               | done     |
-| S-04  | category-aware-diversity        | generate a schedule whose consecutive days also don't share an ingredient category | S-03           | FR-008, Business Logic              | proposed |
+| S-04  | category-aware-diversity        | generate a schedule whose consecutive days also don't share an ingredient category | S-03           | FR-008, Business Logic              | done     |
 | S-05  | recipe-edit-delete-with-cascade | edit or delete a recipe; deleted recipes show as `[deleted]` in past schedules  | S-03, F-01       | FR-006, FR-007                      | proposed |
-| S-06  | delete-latest-schedule          | delete their most recently generated schedule                                   | S-03             | FR-010                              | proposed |
+| S-06  | delete-latest-schedule          | delete their most recently generated schedule                                   | S-03             | FR-010                              | done |
 
 ## Streams
 
@@ -126,7 +126,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Unknowns:**
   - "Minimises clustering" is fuzzy in PRD — is the objective no-consecutive-category (hard), balanced bins across 7 days (softer), or a weighted multi-objective? Owner: implementer. Block: no — PRD says best-effort; the algorithm can iterate.
 - **Risk:** without this slice the product ships but the differentiating feature (variety beyond mere uniqueness) is hidden — Secondary Success Criterion goes unmet. Bias to `speed` keeps this after S-03; if it slips past the deadline the MVP still satisfies the Primary Success Criterion.
-- **Status:** proposed
+- **Status:** done
 
 ### S-05: User can edit or delete a recipe; deleted recipes show as `[deleted]` in past schedules
 
@@ -151,7 +151,7 @@ Foundations below assume these are present and do NOT re-scaffold them.
 - **Blockers:** —
 - **Unknowns:** —
 - **Risk:** smallest slice; intentionally last under `main_goal: speed`. If the deadline gets tight this is the first candidate to defer (FR-010 is must-have so it cannot Park, but it can be the last shipped).
-- **Status:** proposed
+- **Status:** done
 
 ## Backlog Handoff
 
@@ -186,3 +186,5 @@ No open cross-cutting questions. PRD's `## Open Questions` section is empty (qua
 - **S-01: user can sign up, sign in, sign out, and after signing in see a ChickenDinner-branded landing page that lists their (empty) recipe collection.** — Archived 2026-06-02 → `context/archive/2026-06-02-signed-in-empty-home/`. Lesson: —.
 - **S-02: user can open an add-recipe form, supply a name and a category from the closed list of six, and see the recipe in their collection list.** — Archived 2026-06-02 → `context/archive/2026-06-02-add-recipe-to-collection/`. Lesson: —.
 - **S-03: user with ≥ 5 recipes presses "generate" and sees an ordered 7-day schedule drawn from their collection, where no two adjacent days share the same meal; the schedule is persisted and visible on revisit.** — Archived 2026-06-04 → `context/archive/2026-06-03-first-generated-schedule/`. Lesson: —.
+- **S-04: generate a schedule whose consecutive days also don't share an ingredient category** — Archived 2026-06-04 → `context/archive/2026-06-04-category-aware-diversity/`. Lesson: —.
+- **S-06: user can delete the latest entry in their schedule history; the previous schedule becomes "most recent", and the operation can be repeated to clear history one schedule at a time.** — Archived 2026-06-16 → `context/archive/2026-06-04-delete-latest-schedule/`. Lesson: —.

@@ -4,6 +4,7 @@ import Topbar from "@/components/Topbar.astro";
 import { createClient } from "@/lib/supabase";
 import type { ScheduleWithDays } from "@/types";
 import { CATEGORY_LABELS_PL } from "@/types";
+import DeleteScheduleButton from "@/components/schedules/DeleteScheduleButton";
 
 const supabase = createClient(Astro.request.headers, Astro.cookies);
 
@@ -21,6 +22,7 @@ if (supabase) {
 }
 
 const error = Astro.url.searchParams.get("error");
+const deleted = Astro.url.searchParams.get("deleted");
 const latestSchedule = schedules.at(0) ?? null;
 const olderSchedules = schedules.slice(1);
 ---
@@ -72,6 +74,14 @@ const olderSchedules = schedules.slice(1);
         }
 
         {
+          deleted === "1" && (
+            <div class="mb-6 rounded-lg border border-green-500/30 bg-green-500/10 px-4 py-3 text-sm text-green-300">
+              Harmonogram został usunięty.
+            </div>
+          )
+        }
+
+        {
           latestSchedule ? (
             <div class="mb-8">
               <h2 class="mb-4 text-lg font-semibold text-white">Najnowszy harmonogram</h2>
@@ -86,6 +96,9 @@ const olderSchedules = schedules.slice(1);
                   </li>
                 ))}
               </ul>
+              <div class="mt-4 flex justify-end">
+                <DeleteScheduleButton scheduleId={latestSchedule.id} client:load />
+              </div>
             </div>
           ) : (
             <div class="rounded-xl border border-white/10 bg-white/5 p-8 text-center backdrop-blur-xl">
